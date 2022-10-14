@@ -4,12 +4,13 @@ import fetch from "cross-fetch";
 
 export const getJoin = (req, res) =>
   res.render("users/join", { pageTitle: "Join" });
+
 export const postJoin = async (req, res) => {
   const { name, username, email, password, password2, location } = req.body;
   const pageTitle = "Join";
 
   if (password !== password2) {
-    return res.status(400).render("join", {
+    return res.status(400).render("users/join", {
       pageTitle,
       errorMessage: "Passwords do not match.",
     });
@@ -17,7 +18,7 @@ export const postJoin = async (req, res) => {
 
   const exists = await User.exists({ $or: [{ username }, { email }] });
   if (exists) {
-    return res.status(400).render("join", {
+    return res.status(400).render("users/join", {
       pageTitle,
       errorMessage: "This username/email is already taken.",
     });
@@ -33,7 +34,7 @@ export const postJoin = async (req, res) => {
     });
     return res.redirect("/login");
   } catch (error) {
-    return res.status(400).render("join", {
+    return res.status(400).render("users/join", {
       pageTitle,
       errorMessage: error._message,
     });
@@ -51,7 +52,7 @@ export const postLogin = async (req, res) => {
   const user = await User.findOne({ username, socialOnly: false });
 
   if (!user) {
-    return res.status(400).render("login", {
+    return res.status(400).render("users/login", {
       pageTitle,
       errorMessage: "An account with this username does not exist.",
     });
@@ -61,7 +62,7 @@ export const postLogin = async (req, res) => {
   const ok = await bcrypt.compare(password, user.password);
 
   if (!ok) {
-    return res.status(400).render("login", {
+    return res.status(400).render("users/login", {
       pageTitle,
       errorMessage: "Wrong password",
     });
@@ -114,7 +115,6 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    console.log(userData);
 
     const emailData = await (
       await fetch(`${apiUrl}/user/emails`, {
@@ -242,7 +242,7 @@ export const postEdit = async (req, res) => {
   //Code challenge: error when user changes username/email, but the email already exists
   const existingEmail = await User.findOne({ email });
   if (existingEmail && existingEmail._id.toString() !== _id) {
-    return res.status(400).render("edit-profile", {
+    return res.status(400).render("users/edit-profile", {
       pageTitle,
       errorMessage: "This email is already in use.",
     });
@@ -250,7 +250,7 @@ export const postEdit = async (req, res) => {
 
   const existingUsername = await User.findOne({ username });
   if (existingUsername && existingUsername._id.toString() !== _id) {
-    return res.status(400).render("edit-profile", {
+    return res.status(400).render("users/edit-profile", {
       pageTitle,
       errorMessage: "This username is already in use.",
     });
@@ -325,4 +325,14 @@ export const postChangePassword = async (req, res) => {
   return res.redirect("/login");
 };
 
-export const see = (req, res) => res.send("See User");
+export const see = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id).populate("videos");
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "User not found." });
+  }
+  return res.render("users/profile", {
+    pageTitle: user.name,
+    user,
+  });
+};

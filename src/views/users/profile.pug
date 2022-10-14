@@ -1,0 +1,9 @@
+extends ../base
+include ../mixins/video
+
+block content 
+    h3 Uploaded by Me
+    each video in user.videos 
+        +video(video)
+    else 
+        li Sorry not found

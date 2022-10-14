@@ -34,9 +34,10 @@ app.use(
 // });
 
 app.use(localsMiddleware);
+app.use("/uploads", express.static("uploads")); // <- exposing a folder ("please allow people to look into uploads folder")
+app.use("/static", express.static("assets")); // users can access "assets" contents through /static
 app.use("/", globalRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
-app.use("/uploads", express.static("uploads")); // <- expose a folder
 
 export default app;
