@@ -2,8 +2,23 @@ extends base
 include mixins/video
 
 block content
-    h2 Welcome here you will see the trending videos
-    each potato in videos
-        +video(potato)
-    else
-        li sorry, nothing found
+    div.video-grid
+        each video in videos
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+        else
+            span.empty__message No videos found.
