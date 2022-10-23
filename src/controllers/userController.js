@@ -32,6 +32,7 @@ export const postJoin = async (req, res) => {
       password,
       location,
     });
+    req.flash("success", "User created. Please log in.");
     return res.redirect("/login");
   } catch (error) {
     return res.status(400).render("users/join", {
@@ -69,6 +70,7 @@ export const postLogin = async (req, res) => {
   }
   req.session.loggedIn = true;
   req.session.user = user;
+  req.flash("success", `Welcome, ${username}!`);
   return res.redirect("/");
 };
 
@@ -161,7 +163,7 @@ export const startKakaoLogin = (req, res) => {
     client_id: process.env.KAKAO_CLIENT,
     redirect_uri: "http://localhost:4000/users/kakao/finish",
     response_type: "code",
-    scope: "account_email",
+    scopes: ["account_email", "profile"],
   };
   const params = new URLSearchParams(config).toString();
   const finalUrl = `${baseUrl}?${params}`;
@@ -204,7 +206,7 @@ export const finishKakaoLogin = async (req, res) => {
     //If user's account doesn't exist already: create an account
     if (!user) {
       user = await User.create({
-        avatarUrl: userData.kakao_account.profile.profile_image_url,
+        avatarUrl: userData.kakao_account.profile.thumbnail_image_url,
         name: userData.kakao_account.profile.nickname,
         username: userData.kakao_account.profile.nickname,
         email: userData.kakao_account.email,
@@ -221,7 +223,10 @@ export const finishKakaoLogin = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  req.session.destroy();
+  req.flash("success", `See you later, ${req.session.user.username}!`);
+  req.session.user = null;
+  res.locals.loggedInUser = req.session.user;
+  req.session.loggedIn = false;
   return res.redirect("/");
 };
 
@@ -270,12 +275,14 @@ export const postEdit = async (req, res) => {
   );
 
   req.session.user = updatedUser;
+  req.flash("success", "Changes saved.");
 
   return res.redirect(`/users/${_id}`);
 };
 
 export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly === true) {
+    req.flash("error", "You cannot change your password.");
     return res.redirect("/");
   }
   return res.render("users/change-password", { pageTitle: "Change Password" });
@@ -319,7 +326,7 @@ export const postChangePassword = async (req, res) => {
 
   user.password = newPassword;
   await user.save(); // <- save() triggers pre middleware to hash password
-  //send notification
+  req.flash("info", "Password changed. Please log in with your new password.");
 
   req.session.destroy();
   return res.redirect("/login");

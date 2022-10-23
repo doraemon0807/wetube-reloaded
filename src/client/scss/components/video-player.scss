@@ -1,0 +1,226 @@
+.video {
+  display: flex;
+  justify-content: center;
+}
+
+#videoContainer {
+  width: 80%;
+  position: relative;
+  video {
+    width: 100%;
+  }
+  i,
+  span {
+    color: white;
+  }
+
+  input[type="range"] {
+    appearance: none;
+    background: transparent;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      box-sizing: border-box;
+      height: 12px;
+      width: 12px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+
+  .videoMedia {
+    cursor: pointer;
+  }
+
+  .videoControls {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    &.showing {
+      opacity: 1;
+    }
+    align-items: center;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 10px;
+    width: 98%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+
+    .videoControls__timeline {
+      width: 100%;
+      height: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &:hover #timeline {
+        height: 7px;
+        &::-webkit-slider-thumb {
+          transform: translateY(-1px) scale(1.2);
+        }
+        cursor: pointer;
+      }
+
+      #timeline {
+        width: 100%;
+        height: 3px;
+        background-color: $gray-lighter;
+        &::-webkit-slider-thumb {
+          transform: translateY(-1px);
+          background-color: red;
+        }
+      }
+    }
+    .videoControls__buttons {
+      display: grid;
+      grid-template-columns: 1fr 4fr 15fr 1fr auto;
+      gap: 10px;
+      justify-content: space-between;
+      background-color: rgba(130, 130, 130, 0.2);
+      border-radius: 5px;
+      padding: 10px;
+      left: 0;
+      box-sizing: border-box;
+    }
+    .videoControls__play {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      .videoControls__playBtn {
+        margin: 0px 15px;
+      }
+
+      span {
+        cursor: pointer;
+      }
+    }
+
+    .videoControls__volume-time {
+      display: flex;
+
+      .videoControls__volume {
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        #volume {
+          width: 0px;
+          opacity: 0;
+          transition: 0.2s;
+          height: 3px;
+          background-color: $gray-lighter;
+          cursor: pointer;
+
+          &::-webkit-slider-thumb {
+            transition: 0.1s;
+            transform: translateY(1px);
+            background-color: $gray-lighter;
+          }
+        }
+
+        span {
+          display: flex;
+          width: 20px;
+          margin: 0 10px;
+          cursor: pointer;
+
+          i {
+            font-size: 20px;
+            margin-top: 2px;
+          }
+        }
+      }
+      .videoControls__time {
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+        margin-left: 10px;
+      }
+    }
+    .videoControls__fullscreen {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      span {
+        cursor: pointer;
+        i {
+          font-size: 20px;
+        }
+        &:hover i {
+          animation: jello-horizontal 0.9s both;
+        }
+      }
+    }
+  }
+
+  #videoHud {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(45, 45, 45, 0.6);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    i {
+      font-size: 30px;
+      opacity: 0.9;
+    }
+  }
+}
+
+.fade-out {
+  animation: puff-out-center 0.8s ease-out both;
+}
+
+@keyframes puff-out-center {
+  0% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5) translate(-33%, -33%);
+    opacity: 0;
+  }
+}
+
+@keyframes jello-horizontal {
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    -webkit-transform: scale3d(1.25, 0.75, 1);
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    -webkit-transform: scale3d(0.75, 1.25, 1);
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.15, 0.85, 1);
+    transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    -webkit-transform: scale3d(0.95, 1.05, 1);
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  75% {
+    -webkit-transform: scale3d(1.05, 0.95, 1);
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}

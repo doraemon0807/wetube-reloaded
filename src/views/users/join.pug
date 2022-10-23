@@ -2,7 +2,7 @@ extends ../base
 
 block content 
     if errorMessage 
-        span=errorMessage
+        span.error-message=errorMessage
     form(method="POST")
         input(name="name", type="text", required, placeholder="Name")
         input(name="email", type="email", required, placeholder="Email")

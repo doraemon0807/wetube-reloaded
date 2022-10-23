@@ -1,3 +1,42 @@
+.upload__recording {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upload__recording__preview {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid gray;
+  border-radius: 5px;
+  width: 520px;
+  height: 370px;
+  margin-bottom: 10px;
+  span {
+    position: absolute;
+  }
+  video {
+    width: 98%;
+    height: 98%;
+  }
+}
+
+.upload__recording__button {
+  Button {
+    width: 180px;
+    height: 30px;
+    margin: 0 5px;
+  }
+  margin-bottom: 30px;
+}
+
+.hidden-Retake {
+  visibility: hidden;
+  width: 0 !important;
+}
+
 .upload__form {
   label {
     font-size: 14px;

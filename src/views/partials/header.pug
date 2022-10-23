@@ -16,9 +16,12 @@ header
                 li 
                     a(href=`/users/${loggedInUser._id}`)
                         if !loggedInUser.avatarUrl
-                            span 😀
+                            i.far.fa-grin-tongue
+                        else if loggedInUser.socialOnly
+                            img(src=loggedInUser.avatarUrl).avatar.avatar--medium
                         else 
-                            img(src="/"+loggedInUser.avatarUrl).avatar.avatar--medium
+                            img(src="/" + loggedInUser.avatarUrl).avatar.avatar--medium
+
 
             else
                 li 

@@ -3,9 +3,11 @@
   font-size: 18px;
 }
 .video-grid {
+  width: 100%;
   display: grid;
   gap: 50px;
   grid-template-columns: repeat(4, 1fr);
+  margin: 0 20px;
 }
 
 .auth-switch {
@@ -33,4 +35,8 @@
 .avatar--small {
   width: 25px;
   height: 25px;
+}
+
+.error-message {
+  color: red;
 }
