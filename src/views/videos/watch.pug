@@ -29,17 +29,23 @@ block content
             div#videoHud
                 i.fas.fa-play
 
-    div
-        p=video.description
-        small=video.createdAt
-    div
-        small Uploaded by 
+    div.video__data
+        p.video__title=video.description
+        small.video__owner Uploaded by 
             a(href=`/users/${video.owner.id}`) #{video.owner.name}
+        small.video__createdAt=new Date(video.createdAt).toLocaleDateString("Canada")
+        if String(video.owner.id) === String(loggedInUser._id)
+            a(href=`${video.id}/edit`) Edit Video &rarr;
+            a(href=`${video.id}/delete`) Delete Video &rarr;
 
-    if String(video.owner.id) === String(loggedInUser._id)
-        a(href=`${video.id}/edit`) Edit Video &rarr;
-        br
-        a(href=`${video.id}/delete`) Delete Video &rarr;
+    if loggedIn
+        div.video__comments
+            form.video__comment-form#commentForm
+                textarea#commentTextArea(cols="30", rows="10", placeholder="Write a nice comment...")
+                button Add Comment
+        
 
 block scripts 
     script(src="/static/js/videoPlayer.js")
+    if loggedIn
+        script(src="/static/js/commentSection.js")

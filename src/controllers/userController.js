@@ -193,27 +193,30 @@ export const finishKakaoLogin = async (req, res) => {
   if ("access_token" in tokenRequest) {
     const { access_token } = tokenRequest;
     const apiUrl = "https://kapi.kakao.com";
-    const userData = await (
-      await fetch(`${apiUrl}/v2/user/me`, {
-        //method: "GET",
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      })
-    ).json();
+    const userData = (
+      await (
+        await fetch(`${apiUrl}/v2/user/me`, {
+          //method: "GET",
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        })
+      ).json()
+    ).kakao_account;
 
-    let user = await User.findOne({ email: userData.kakao_account.email });
+    let user = await User.findOne({ email: userData.email });
     //If user's account doesn't exist already: create an account
     if (!user) {
       user = await User.create({
-        avatarUrl: userData.kakao_account.profile.thumbnail_image_url,
-        name: userData.kakao_account.profile.nickname,
-        username: userData.kakao_account.profile.nickname,
-        email: userData.kakao_account.email,
+        avatarUrl: userData.profile.thumbnail_image_url,
+        name: userData.profile.nickname,
+        username: userData.profile.nickname,
+        email: userData.email,
         password: "",
         socialOnly: true,
       });
     }
+
     req.session.loggedIn = true;
     req.session.user = user;
     return res.redirect("/");

@@ -7,7 +7,7 @@ block content
             if !user.avatarUrl
                 i.far.fa-grin-tongue
             else if user.socialOnly
-                img(src=user.avatarUrl).avatar.avatar--big
+                img(src=user.avatarUrl crossorigin).avatar.avatar--big
             else 
                 img(src="/" + user.avatarUrl).avatar.avatar--big
 

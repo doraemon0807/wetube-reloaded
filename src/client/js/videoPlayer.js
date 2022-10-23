@@ -263,60 +263,74 @@ const handleViews = () => {
   fetch(`/api/videos/${id}/view`, { method: "POST" });
 };
 
-const handleKeyDown = (event) => {
-  switch (event.code) {
-    case "Space":
-      handlePlayClick();
-      break;
-    case "ArrowUp":
-      if (volumeValue + volumeStep >= 1) {
-        volumeValue = 1;
-      } else {
-        volumeValue = Math.round(volumeValue * 10) / 10 + volumeStep;
-      }
-      volumeRange.value = volumeValue;
-      video.volume = volumeValue;
-      if (volumeRange.value > 0) {
-        video.muted = false;
-      }
-      handleVolumeIcon(volumeValue);
-      handleVolumeAnimation();
-      handleVolumeTimeout();
-      break;
+const handleArrowUpDown = () => {
+  handleVolumeIcon(volumeValue);
+  handleVolumeAnimation();
+  handleVolumeTimeout();
+  if (!video.ended) {
+    videoHudIcon.classList = "fas fa-volume-up";
+    handleHud();
+  }
+  handleMouseMove();
+};
 
-    case "ArrowDown":
-      if (!video.muted) {
-        if (volumeValue - volumeStep <= 0) {
-          volumeValue = 0;
+const handleKeyDown = (event) => {
+  if (event.target.id == "commentTextArea") {
+    return;
+  } else {
+    switch (event.code) {
+      case "Space":
+        handlePlayClick();
+        break;
+      case "ArrowUp":
+        if (volumeValue + volumeStep >= 1) {
+          volumeValue = 1;
         } else {
-          volumeValue = Math.round(volumeValue * 10) / 10 - volumeStep;
+          volumeValue = Math.round(volumeValue * 10) / 10 + volumeStep;
         }
         volumeRange.value = volumeValue;
         video.volume = volumeValue;
-        if (volumeRange.value == 0) {
-          video.muted = true;
+        if (volumeRange.value > 0) {
+          video.muted = false;
         }
-        handleVolumeIcon(volumeValue);
-        handleVolumeAnimation();
-        handleVolumeTimeout();
-      }
-      break;
-    case "ArrowLeft":
-      video.currentTime -= 2;
-      break;
-    case "ArrowRight":
-      video.currentTime += 2;
-      break;
-    case "Enter":
-    case "KeyF":
-      handleFullScreen();
-      break;
-    case "KeyM":
-      handleMute();
-      break;
-  }
+        handleArrowUpDown();
+        break;
 
-  console.log(event.code);
+      case "ArrowDown":
+        if (!video.muted) {
+          if (volumeValue - volumeStep <= 0) {
+            volumeValue = 0;
+          } else {
+            volumeValue = Math.round(volumeValue * 10) / 10 - volumeStep;
+          }
+          volumeRange.value = volumeValue;
+          video.volume = volumeValue;
+          if (volumeRange.value == 0) {
+            video.muted = true;
+          }
+          handleArrowUpDown();
+        }
+        break;
+      case "ArrowLeft":
+        videoHudIcon.classList = "fas fa-fast-backward";
+        handleHud();
+        video.currentTime -= 2;
+        break;
+      case "ArrowRight":
+        videoHudIcon.classList = "fas fa-fast-forward";
+        handleHud();
+        video.currentTime += 2;
+        break;
+      case "KeyF":
+        handleFullScreen();
+        break;
+      case "KeyM":
+        handleMute();
+        break;
+    }
+
+    // console.log(event.code);
+  }
 };
 
 play.addEventListener("click", handlePlayClick);
