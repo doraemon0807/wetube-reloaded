@@ -39,10 +39,22 @@ block content
             a(href=`${video.id}/delete`) Delete Video &rarr;
 
     if loggedIn
-        div.video__comments
+        div.video__add-comments
             form.video__comment-form#commentForm
                 textarea#commentTextArea(cols="30", rows="10", placeholder="Write a nice comment...")
                 button Add Comment
+    div.video__comments
+        ul 
+            each comment in video.comments
+                li.video__comment(data-id=comment.id)
+                    i.fas.fa-comment 
+                    span #{comment.text}
+                    if String(video.owner.id) === String(loggedInUser._id)
+                        button.video__comment__delete 
+                            i.fas.fa-trash-alt
+            else 
+                span There is no comments in this video.
+                    
         
 
 block scripts 

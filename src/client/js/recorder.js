@@ -109,7 +109,7 @@ const init = async () => {
     audio: false,
     video: {
       width: 500,
-      height: 350,
+      height: 300,
     },
   });
   video.srcObject = stream;

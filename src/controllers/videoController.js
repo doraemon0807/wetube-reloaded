@@ -1,3 +1,4 @@
+import Comment from "../models/Comment";
 import User from "../models/User";
 import Video from "../models/Video";
 
@@ -11,7 +12,7 @@ export const home = async (req, res) => {
 export const watch = async (req, res) => {
   const { id } = req.params;
 
-  const video = await Video.findById(id).populate("owner");
+  const video = await Video.findById(id).populate("owner").populate("comments");
 
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video Not Found." });
@@ -155,8 +156,56 @@ export const registerView = async (req, res) => {
   return res.sendStatus(200);
 };
 
-export const createComment = (req, res) => {
-  console.log(req.params);
-  console.log(req.body);
-  res.end();
+export const createComment = async (req, res) => {
+  const {
+    session: { user },
+    params: { id },
+    body: { text },
+  } = req;
+
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.sendStatus(404);
+  }
+
+  const comment = await Comment.create({
+    text,
+    owner: user._id,
+    video: id,
+  });
+  video.comments.unshift(comment._id);
+  video.save();
+
+  const userSave = await User.findById(user);
+  userSave.comments.unshift(comment._id);
+  userSave.save();
+
+  return res.status(201).json({ newCommentId: comment._id });
+};
+
+export const removeComment = async (req, res) => {
+  const {
+    session: { user }, // <- current user ID
+    params: { id }, // <- selected comment ID
+    body: { videoId }, // <- video's ID
+  } = req;
+
+  const commentOwner = (await User.find({ comments: id }))[0];
+  const video = await Video.findById(videoId);
+
+  if (!commentOwner.id === user) {
+    console.log("You are not the owner of the comment!");
+    return res.sendStatus(404);
+  }
+
+  // remove comment from user's data and save
+  commentOwner.comments.splice(commentOwner.comments.indexOf(id), 1);
+  commentOwner.save();
+
+  // remove comment from video's data and save
+  video.comments.splice(video.comments.indexOf(id), 1);
+  video.save();
+
+  //return status 200
+  return res.sendStatus(200);
 };
