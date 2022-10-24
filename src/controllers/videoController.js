@@ -112,7 +112,6 @@ export const deleteVideo = async (req, res) => {
   } = req;
 
   const video = await Video.findById(id);
-  const user = await User.findById(_id);
 
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video not found" });
@@ -121,9 +120,23 @@ export const deleteVideo = async (req, res) => {
     return res.status(403).redirect("/");
   }
 
+  if (video.comments) {
+    for (const comment of video.comments) {
+      let commentUser = (await User.find({ comments: comment }))[0];
+      if (commentUser) {
+        commentUser.comments.splice(commentUser.comments.indexOf(comment), 1);
+        await commentUser.save();
+      }
+    }
+  }
+
   await Video.findByIdAndDelete(id);
+
+  const user = await User.findById(_id);
   user.videos.splice(user.videos.indexOf(id), 1);
   user.save();
+
+  //remove comments from the database as well
 
   req.flash("success", "Video deleted.");
   return res.redirect("/");
@@ -198,13 +211,13 @@ export const removeComment = async (req, res) => {
     return res.sendStatus(404);
   }
 
-  // remove comment from user's data and save
   commentOwner.comments.splice(commentOwner.comments.indexOf(id), 1);
   commentOwner.save();
 
-  // remove comment from video's data and save
   video.comments.splice(video.comments.indexOf(id), 1);
   video.save();
+
+  //remove comments from the database as well
 
   //return status 200
   return res.sendStatus(200);

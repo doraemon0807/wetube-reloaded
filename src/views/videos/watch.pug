@@ -49,11 +49,9 @@ block content
                 li.video__comment(data-id=comment.id)
                     i.fas.fa-comment 
                     span #{comment.text}
-                    if String(video.owner.id) === String(loggedInUser._id)
+                    if String(comment.owner) === String(loggedInUser._id)
                         button.video__comment__delete 
                             i.fas.fa-trash-alt
-            else 
-                span There is no comments in this video.
                     
         
 

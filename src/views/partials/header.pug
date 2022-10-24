@@ -18,7 +18,7 @@ header
                         if !loggedInUser.avatarUrl
                             i.far.fa-grin-tongue
                         else if loggedInUser.socialOnly
-                            img(src=loggedInUser.avatarUrl crossorigin).avatar.avatar--medium
+                            img(src=loggedInUser.avatarUrl crossorigin="anonymous").avatar.avatar--medium
                         else 
                             img(src="/" + loggedInUser.avatarUrl).avatar.avatar--medium
 

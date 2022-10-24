@@ -49,14 +49,6 @@ const handleSubmit = async (event) => {
   }
 };
 
-// addeventlistener: click X button
-// send delete request
-// in controller, check if user is the owner of the comment
-
-const deleteComment = (li) => {
-  li.remove();
-};
-
 const handleDelete = async (event) => {
   let li = event.target.parentElement;
 
@@ -75,7 +67,7 @@ const handleDelete = async (event) => {
     body: JSON.stringify({ videoId }),
   });
   if (response.status === 200) {
-    deleteComment(li);
+    li.remove();
   }
 };
 
