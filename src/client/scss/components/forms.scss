@@ -3,7 +3,7 @@ form {
   margin: 0 auto;
 }
 
-form:not(.search__form) {
+form:not(.search__form, .video__comment__edit__container *) {
   padding: 30px;
   background-color: rgba(170, 170, 170, 0.1);
   border-radius: 10px;

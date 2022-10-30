@@ -275,7 +275,7 @@ const handleArrowUpDown = () => {
 };
 
 const handleKeyDown = (event) => {
-  if (event.target.id == "commentTextArea") {
+  if (event.target.tagName == "TEXTAREA") {
     return;
   } else {
     switch (event.code) {

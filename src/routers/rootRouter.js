@@ -1,6 +1,6 @@
 import express from "express";
 
-import { publicOnlyMiddleware, protectorMiddleware } from "../middlewares";
+import { publicOnlyMiddleware } from "../middlewares";
 
 import {
   getJoin,

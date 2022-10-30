@@ -82,3 +82,8 @@ main {
     color: white;
   }
 }
+
+.hidden {
+  visibility: hidden;
+  transform: scale(0);
+}

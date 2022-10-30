@@ -131,7 +131,7 @@ export const finishGithubLogin = async (req, res) => {
     );
     //If GitHub account doesn't have primary/verified email:
     if (!emailObj) {
-      //set notification
+      req.flash("error", "The account doesn't have primary/verified email.");
       return res.redirect("/login");
     }
     //If email exists

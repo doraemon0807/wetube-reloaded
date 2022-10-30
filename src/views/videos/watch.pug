@@ -47,11 +47,15 @@ block content
         ul 
             each comment in video.comments
                 li.video__comment(data-id=comment.id)
-                    i.fas.fa-comment 
-                    span #{comment.text}
-                    if String(comment.owner) === String(loggedInUser._id)
-                        button.video__comment__delete 
-                            i.fas.fa-trash-alt
+                    div.video__comment__container
+                        i.fas.fa-comment 
+                        span #{comment.text}
+                        div.video__comment__buttons
+                            if String(comment.owner) === String(loggedInUser._id)
+                                button.video__comment__edit
+                                    i.fas.fa-pen
+                                button.video__comment__delete 
+                                    i.fas.fa-trash-alt
                     
         
 

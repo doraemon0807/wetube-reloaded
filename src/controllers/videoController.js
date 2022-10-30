@@ -126,6 +126,7 @@ export const deleteVideo = async (req, res) => {
       if (commentUser) {
         commentUser.comments.splice(commentUser.comments.indexOf(comment), 1);
         await commentUser.save();
+        await Comment.findByIdAndDelete(comment);
       }
     }
   }
@@ -135,8 +136,6 @@ export const deleteVideo = async (req, res) => {
   const user = await User.findById(_id);
   user.videos.splice(user.videos.indexOf(id), 1);
   user.save();
-
-  //remove comments from the database as well
 
   req.flash("success", "Video deleted.");
   return res.redirect("/");
@@ -196,6 +195,17 @@ export const createComment = async (req, res) => {
   return res.status(201).json({ newCommentId: comment._id });
 };
 
+let commentOwner = "";
+
+const checkCommentOwner = async (user, id) => {
+  commentOwner = (await User.find({ comments: id }))[0];
+
+  if (!commentOwner.id === user) {
+    console.log("You are not the owner of the comment!");
+    return res.sendStatus(404);
+  }
+};
+
 export const removeComment = async (req, res) => {
   const {
     session: { user }, // <- current user ID
@@ -203,13 +213,9 @@ export const removeComment = async (req, res) => {
     body: { videoId }, // <- video's ID
   } = req;
 
-  const commentOwner = (await User.find({ comments: id }))[0];
   const video = await Video.findById(videoId);
 
-  if (!commentOwner.id === user) {
-    console.log("You are not the owner of the comment!");
-    return res.sendStatus(404);
-  }
+  await checkCommentOwner(user, id);
 
   commentOwner.comments.splice(commentOwner.comments.indexOf(id), 1);
   commentOwner.save();
@@ -217,8 +223,28 @@ export const removeComment = async (req, res) => {
   video.comments.splice(video.comments.indexOf(id), 1);
   video.save();
 
-  //remove comments from the database as well
+  await Comment.findByIdAndDelete(id);
 
   //return status 200
+  return res.sendStatus(200);
+};
+
+export const editComment = async (req, res) => {
+  const {
+    session: { user }, // <- current user ID
+    params: { id }, // <- selected comment ID
+    body: { text }, // modified comment text
+  } = req;
+
+  console.log(req.body.text);
+
+  await checkCommentOwner(user, id);
+
+  const comment = await Comment.findByIdAndUpdate(id, {
+    text,
+  });
+  console.log(text);
+  console.log(comment.text);
+
   return res.sendStatus(200);
 };
