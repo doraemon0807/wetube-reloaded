@@ -1,17 +1,10 @@
 # Wetube Reloaded
 
-/ -> Home
+to do:
 
-/join -> Join
-/login -> Login
-/search -> Search
-
-/users/:id -> See user
-/users/logout -> Log Out
-/users/edit -> Edit my profile
-/users/delete -> Delete my user
-
-/videos/:id -> See Video
-/videos/:id/edit -> Edit Video
-/videos/:id/delete -> Delete Video
-/videos/upload -> Upload Video
+Comment format: avatar
+Subscription
+Likes - video
+Likes - comment
+Number of comments on the video
+Profile page - list of comments added

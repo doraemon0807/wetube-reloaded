@@ -30,19 +30,51 @@ block content
                 i.fas.fa-play
 
     div.video__data
-        p.video__title=video.description
-        small.video__owner Uploaded by 
-            a(href=`/users/${video.owner.id}`) #{video.owner.name}
-        small.video__createdAt=new Date(video.createdAt).toLocaleDateString("Canada")
-        if String(video.owner.id) === String(loggedInUser._id)
-            a(href=`${video.id}/edit`) Edit Video &rarr;
-            a(href=`${video.id}/delete`) Delete Video &rarr;
+        div.video__data__info
+            p.video__title=video.title
+            div.video__meta
+                small.video__views #{video.meta.views} #{video.meta.views == 1 ? "view" : "views"}  •  
+                small.video__createdAt=new Date(video.createdAt).toLocaleDateString("Canada")
+        div.video__btns
+            if String(video.owner.id) === String(loggedInUser._id)
+                a(href=`${video.id}/like`)
+                    i.fas.fa-heart
+                    span LIKE
+                a(href=`${video.id}/edit`)
+                    i.fas.fa-pen
+                    span EDIT
+                a(href=`${video.id}/delete`)
+                    i.fas.fa-trash-alt
+                    span DELETE
+    div.video__subdata
+        div.video__owner__avatar
+            a(href=`/users/${video.owner.id}`)
+                img(src=video.owner.avatarUrl crossorigin="anonymous").avatar.avatar--medium
+        div.video__info
+            div.video__info__owner
+                div.video__info__owner__name
+                    a(href=`/users/${video.owner.id}`)
+                        span=video.owner.username
+                div.video__info__owner__subs
+                    //- span=video.owner.subs
+                    span 0 subscribers
+            div.video__description
+                span=video.description
+        div.video__subs
+            a(href=`${video.id}/subs`)
+                span Subscribe
+
+    div.video__commentCount
+        //- span=video.commentCount
+        span 0 Comments
 
     if loggedIn
         div.video__add-comments
+            div.video__add-comments__avatar
+                img(src=video.owner.avatarUrl crossorigin="anonymous").avatar.avatar--medium
             form.video__comment-form#commentForm
                 textarea#commentTextArea(cols="30", rows="10", placeholder="Write a nice comment...")
-                button Add Comment
+                button COMMENT
     div.video__comments
         ul 
             each comment in video.comments
