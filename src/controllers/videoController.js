@@ -184,6 +184,8 @@ export const createComment = async (req, res) => {
     text,
     owner: user._id,
     video: id,
+    avatarUrl: user.avatarUrl,
+    username: user.username,
   });
   video.comments.unshift(comment._id);
   video.save();
@@ -192,7 +194,12 @@ export const createComment = async (req, res) => {
   userSave.comments.unshift(comment._id);
   userSave.save();
 
-  return res.status(201).json({ newCommentId: comment._id });
+  return res.status(201).json({
+    newCommentId: comment._id,
+    avatarUrl: comment.avatarUrl,
+    username: comment.username,
+    createdAt: comment.createdAt,
+  });
 };
 
 let commentOwner = "";

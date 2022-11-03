@@ -4,22 +4,40 @@ const form = document.getElementById("commentForm");
 let deleteBtns = document.querySelectorAll(".video__comment__delete");
 let editBtns = document.querySelectorAll(".video__comment__edit");
 
-const addComment = (text, id) => {
+const addComment = (text, id, avatarUrl, username) => {
   const videoComments = document.querySelector(".video__comments ul");
   const newComment = document.createElement("li");
   newComment.dataset.id = id;
   newComment.className = "video__comment";
 
-  const icon = document.createElement("i");
-  icon.className = "fas fa-comment";
+  const avatar = document.createElement("img");
+  avatar.className = "avatar avatar--medium";
+  avatar.src = avatarUrl;
+  avatar.crossOrigin = "anonymous";
 
-  const span = document.createElement("span");
-  span.innerText = text;
+  const commentOwner = document.createElement("span");
+  commentOwner.innerText = username;
+  commentOwner.className = "video__comment__info__owner__username";
+
+  const createdTime = document.createElement("span");
+  createdTime.innerText = "Just Now";
+  createdTime.className = "video__comment__info__createdAt";
+
+  const commentText = document.createElement("span");
+  commentText.innerText = text;
+
+  const likeBtn = document.createElement("button");
+  const likeIcon = document.createElement("i");
+
+  likeBtn.className = "video__comment__buttons__like";
+  likeIcon.className = "fas fa-heart";
+
+  likeBtn.appendChild(likeIcon);
 
   const deleteBtn = document.createElement("button");
   const deleteIcon = document.createElement("i");
 
-  deleteBtn.className = "video__comment__delete";
+  deleteBtn.className = "video__comment__buttons__delete";
   deleteIcon.className = "fas fa-trash-alt";
 
   deleteBtn.appendChild(deleteIcon);
@@ -27,7 +45,7 @@ const addComment = (text, id) => {
   const editBtn = document.createElement("button");
   const editIcon = document.createElement("i");
 
-  editBtn.className = "video__comment__edit";
+  editBtn.className = "video__comment__buttons__edit";
   editIcon.className = "fas fa-pen";
 
   editBtn.appendChild(editIcon);
@@ -38,8 +56,29 @@ const addComment = (text, id) => {
   const commentContainer = document.createElement("div");
   commentContainer.className = "video__comment__container";
 
-  commentContainer.appendChild(icon);
-  commentContainer.appendChild(span);
+  const commentAvatar = document.createElement("div");
+  commentAvatar.className = "video__comment__avatar";
+
+  const commentInfo = document.createElement("div");
+  commentInfo.className = "video__comment__info";
+
+  const commentInfoOwner = document.createElement("div");
+  commentInfoOwner.className = "video__comment__info__owner";
+
+  const commentInfoDesc = document.createElement("div");
+  commentInfoDesc.className = "video__comment__info__description";
+
+  commentContainer.appendChild(commentAvatar);
+  commentAvatar.appendChild(avatar);
+
+  commentContainer.appendChild(commentInfo);
+  commentInfo.appendChild(commentInfoOwner);
+  commentInfoOwner.appendChild(commentOwner);
+  commentInfoOwner.appendChild(createdTime);
+  commentInfo.appendChild(commentInfoDesc);
+  commentInfoDesc.appendChild(commentText);
+
+  btns.appendChild(likeBtn);
   btns.appendChild(editBtn);
   btns.appendChild(deleteBtn);
   commentContainer.appendChild(btns);
@@ -65,8 +104,8 @@ const handleSubmit = async (event) => {
   });
   if (response.status === 201) {
     textarea.value = "";
-    const { newCommentId } = await response.json();
-    addComment(text, newCommentId);
+    const { newCommentId, avatarUrl, username } = await response.json();
+    addComment(text, newCommentId, avatarUrl, username);
   }
   btnAddEventListener();
 };
@@ -115,7 +154,8 @@ const handleEdit = (event) => {
   );
 
   const commentText =
-    event.target.parentElement.parentElement.parentElement.innerText;
+    event.target.parentElement.parentElement.parentElement.childNodes[1]
+      .childNodes[1].innerText;
 
   const videoComment = commentSection.parentElement;
 
@@ -189,7 +229,9 @@ const handleEditSubmit = async (event) => {
   });
 
   if (response.status === 200) {
-    const textSpan = li.querySelector(".video__comment__container span");
+    const textSpan = li.querySelector(
+      ".video__comment__info__description span"
+    );
     textSpan.innerText = text;
     restoreEditComment(submitBtn);
   }
@@ -219,7 +261,7 @@ const restoreEditComment = (btn) => {
   );
   commentEditContainer.remove();
 
-  const editBtn = videoComment.querySelector(".video__comment__edit");
+  const editBtn = videoComment.querySelector(".video__comment__buttons__edit");
   editBtn.classList.remove("hidden");
 };
 
@@ -228,13 +270,13 @@ if (form) {
 }
 
 const btnAddEventListener = () => {
-  deleteBtns = document.querySelectorAll(".video__comment__delete");
+  deleteBtns = document.querySelectorAll(".video__comment__buttons__delete");
   if (deleteBtns) {
     deleteBtns.forEach((deleteBtn) => {
       deleteBtn.addEventListener("click", handleDelete);
     });
   }
-  editBtns = document.querySelectorAll(".video__comment__edit");
+  editBtns = document.querySelectorAll(".video__comment__buttons__edit");
   if (editBtns) {
     editBtns.forEach((editBtn) => {
       editBtn.addEventListener("click", handleEdit);

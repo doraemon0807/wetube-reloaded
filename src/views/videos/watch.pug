@@ -1,4 +1,5 @@
 extends ../base
+include ../mixins/created-ago
 
 block content 
     div.video
@@ -80,13 +81,21 @@ block content
             each comment in video.comments
                 li.video__comment(data-id=comment.id)
                     div.video__comment__container
-                        i.fas.fa-comment 
-                        span #{comment.text}
+                        div.video__comment__avatar
+                            img(src=comment.avatarUrl crossorigin="anonymous").avatar.avatar--medium
+                        div.video__comment__info
+                            div.video__comment__info__owner
+                                div.video__comment__info__owner__username=comment.username
+                                +createdAgo(comment.createdAt)
+                            div.video__comment__info__description
+                                span=comment.text
                         div.video__comment__buttons
                             if String(comment.owner) === String(loggedInUser._id)
-                                button.video__comment__edit
+                                button.video__comment__buttons__like
+                                    i.fas.fa-heart
+                                button.video__comment__buttons__edit
                                     i.fas.fa-pen
-                                button.video__comment__delete 
+                                button.video__comment__buttons__delete 
                                     i.fas.fa-trash-alt
                     
         

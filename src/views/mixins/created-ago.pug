@@ -1,0 +1,44 @@
+mixin createdAgo(createdAt)
+    -
+        const diff = Math.floor((new Date()-new Date(createdAt))/1000)
+        let timeAgo = ""
+        const checkTimeDiff = () => {
+            switch (true){
+                case (diff <= 1): 
+                    timeAgo = "Just Now";
+                    break;
+                case (diff < 20): 
+                    timeAgo = diff + " seconds ago";
+                    break;
+                case (diff < 60): 
+                    timeAgo = "less than a minute ago";
+                    break;
+                case (diff <= 90): 
+                    timeAgo = "one minute ago";
+                    break;
+                case (diff <= 3540): 
+                    timeAgo = Math.round(diff / 60) + " minutes ago";
+                    break;
+                case (diff <= 5400): 
+                    timeAgo = "1 hour ago";
+                    break;
+                case (diff <= 82800): 
+                    timeAgo = Math.round(diff / 3600) + " hours ago";
+                    break;
+                case (diff <= 129600): 
+                    timeAgo = "1 day ago";
+                    break;
+                case (diff < 604800): 
+                    timeAgo = Math.round(diff / 86400) + " days ago";
+                    break;
+                case (diff <= 777600) : 
+                    timeAgo = "1 week ago";
+                    break;
+                default: 
+                     timeAgo = "on" + createdAt;
+                     break;
+            }
+        }
+        checkTimeDiff()
+
+    div.video__comment__info__createdAt=timeAgo
