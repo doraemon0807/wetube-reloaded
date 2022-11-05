@@ -345,7 +345,13 @@ export const see = async (req, res) => {
         model: "User",
       },
     })
-    .populate("comments");
+    .populate({
+      path: "comments",
+      populate: {
+        path: "video",
+        model: "Video",
+      },
+    });
 
   if (!user) {
     return res.status(404).render("404", { pageTitle: "User not found." });
@@ -354,4 +360,48 @@ export const see = async (req, res) => {
     pageTitle: user.name,
     user,
   });
+};
+
+export const registerSubs = async (req, res) => {
+  const { id } = req.params; //<- id of subscribed user
+  const {
+    user: { _id }, // <= id of subscribing user
+  } = req.session;
+
+  const subscribedUser = await User.findById(id);
+
+  if (!subscribedUser) {
+    return res.sendStatus(404);
+  }
+  subscribedUser.subs = subscribedUser.subs + 1;
+  await subscribedUser.save();
+
+  const currentUser = await User.findById(_id).populate("subbedUsers");
+
+  currentUser.subbedUsers.unshift(id);
+  await currentUser.save();
+
+  return res.sendStatus(200);
+};
+
+export const registerUnsubs = async (req, res) => {
+  const { id } = req.params; //<- id of subscribed user
+  const {
+    user: { _id }, // <= id of subscribing user
+  } = req.session;
+
+  const subscribedUser = await User.findById(id);
+
+  if (!subscribedUser) {
+    return res.sendStatus(404);
+  }
+  subscribedUser.subs = subscribedUser.subs - 1;
+  await subscribedUser.save();
+
+  const currentUser = await User.findById(_id).populate("subbedUsers");
+
+  currentUser.subbedUsers.remove(id);
+  await currentUser.save();
+
+  return res.sendStatus(200);
 };

@@ -1,26 +1,40 @@
 extends ../base
 include ../mixins/video
+include ../mixins/avatar
+include ../mixins/created-ago
 
 block content 
     div.profile
         div.profile__data
-            if !user.avatarUrl
-                i.far.fa-grin-tongue
-            else if user.socialOnly
-                img(src=user.avatarUrl crossorigin="anonymous").avatar.avatar--big
-            else 
-                img(src="/" + user.avatarUrl).avatar.avatar--big
-
-            h3=user.name
-        div.video-grid
-            each video in user.videos 
-                +video(video)
-            else 
-                span.empty__message No videos found.
-
+            +avatar(user, "big")
+            div.profile__data__info
+                div.profile__date__info__username
+                    span=user.name
+                div.profile__data__subs
+                    span.subsCount=`${user.subs}`
+                    span=` ${user.subs == 1 ? "subscriber": "subscribers" }`
+        div.profile__user-videos
+            h2 #{user.name}'s Videos
+            div.video-grid
+                each video in user.videos 
+                    +video(video)
+                else 
+                    span.empty__message No videos found.
 
         div.profile__user-comments
+            h2 #{user.name}'s Recent Comments
+            - let cnt = 0;
             each comment in user.comments
-                li=comment.text
+                div.profile__user-comments__container
+                    a.profile__user-comments__thumbnail(href=`/videos/${comment.video._id}` style=`background-image:url(/${comment.video.thumbUrl});background-size:cover;background-position:center`)
+                    div.profile__user-comments__info
+                        div.profile__user-comments__info__title=comment.video.title
+                        div.profile__user-comments__info__createdAt
+                            +createdAgo(comment.createdAt)
+                        div.profile__user-comments__info__text
+                            span=`"${comment.text}"`
+                - cnt = cnt + 1;
+                - if (cnt == 10) break
+
             else 
                 span.empty__message No comments found.

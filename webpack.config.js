@@ -9,6 +9,7 @@ module.exports = {
     videoPlayer: BASE_JS + "videoPlayer.js",
     recorder: BASE_JS + "recorder.js",
     commentSection: BASE_JS + "commentSection.js",
+    likeSubs: BASE_JS + "likeSubs.js",
   }, // <- file you want to convert
   plugins: [
     new MiniCssExtractPlugin({

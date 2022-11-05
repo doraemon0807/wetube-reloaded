@@ -3,19 +3,91 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
 
-.profile__data {
-  max-width: 420px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 50px;
-  img {
-    margin-bottom: 10px;
+  h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
   }
+
   h3 {
-    font-size: 18px;
+    font-size: 20px;
+    margin: 10px 0;
+  }
+
+  .profile__data {
+    max-width: 420px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 60px;
+
+    .profile__data__info {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .profile__date__info__username {
+        margin-bottom: 20px;
+
+        span {
+          font-size: 24px;
+        }
+      }
+
+      .profile__data__subs {
+        * {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+
+  .profile__user-videos {
+    width: 100%;
+  }
+
+  .profile__user-videos {
+    margin-top: 50px;
+  }
+
+  .profile__user-comments {
+    margin-top: 50px;
+    width: 100%;
+
+    .profile__user-comments__container {
+      display: flex;
+      margin-bottom: 30px;
+
+      .profile__user-comments__thumbnail {
+        width: 150px;
+        height: 100px;
+        min-width: 150px;
+        min-height: 100px;
+        border-radius: 5px;
+        margin-right: 20px;
+      }
+      .profile__user-comments__info {
+        width: 100%;
+
+        .profile__user-comments__info__title {
+          font-size: 20px;
+          margin-bottom: 5px;
+        }
+
+        .profile__user-comments__info__createdAt {
+          font-size: 12px;
+          color: rgba(120, 120, 120, 1);
+          margin-bottom: 8px;
+        }
+
+        .profile__user-comments__info__text {
+          width: 80%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
   }
 }

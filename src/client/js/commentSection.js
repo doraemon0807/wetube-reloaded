@@ -4,19 +4,14 @@ const form = document.getElementById("commentForm");
 let deleteBtns = document.querySelectorAll(".video__comment__delete");
 let editBtns = document.querySelectorAll(".video__comment__edit");
 
-const addComment = (text, id, avatarUrl, username) => {
+const addComment = (comment) => {
   const videoComments = document.querySelector(".video__comments ul");
   const newComment = document.createElement("li");
-  newComment.dataset.id = id;
+  newComment.dataset.id = comment._id;
   newComment.className = "video__comment";
 
-  const avatar = document.createElement("img");
-  avatar.className = "avatar avatar--medium";
-  avatar.src = avatarUrl;
-  avatar.crossOrigin = "anonymous";
-
   const commentOwner = document.createElement("span");
-  commentOwner.innerText = username;
+  commentOwner.innerText = comment.owner.username;
   commentOwner.className = "video__comment__info__owner__username";
 
   const createdTime = document.createElement("span");
@@ -24,15 +19,7 @@ const addComment = (text, id, avatarUrl, username) => {
   createdTime.className = "video__comment__info__createdAt";
 
   const commentText = document.createElement("span");
-  commentText.innerText = text;
-
-  const likeBtn = document.createElement("button");
-  const likeIcon = document.createElement("i");
-
-  likeBtn.className = "video__comment__buttons__like";
-  likeIcon.className = "fas fa-heart";
-
-  likeBtn.appendChild(likeIcon);
+  commentText.innerText = comment.text;
 
   const deleteBtn = document.createElement("button");
   const deleteIcon = document.createElement("i");
@@ -68,8 +55,24 @@ const addComment = (text, id, avatarUrl, username) => {
   const commentInfoDesc = document.createElement("div");
   commentInfoDesc.className = "video__comment__info__description";
 
+  if (!comment.owner.avatarUrl) {
+    const avatarMissing = document.createElement("div");
+    avatarMissing.className = "avatar avatar--medium avatar--missing";
+    const avatarMissingLetter = document.createElement("span");
+    avatarMissingLetter.innerText = comment.owner.username
+      .slice(1, 2)
+      .toUpperCase();
+    avatarMissing.appendChild(avatarMissingLetter);
+    commentAvatar.appendChild(avatarMissing);
+  } else {
+    const avatar = document.createElement("img");
+    avatar.className = "avatar avatar--medium";
+    avatar.src = comment.owner.avatarUrl;
+    avatar.crossOrigin = "anonymous";
+    commentAvatar.appendChild(avatar);
+  }
+
   commentContainer.appendChild(commentAvatar);
-  commentAvatar.appendChild(avatar);
 
   commentContainer.appendChild(commentInfo);
   commentInfo.appendChild(commentInfoOwner);
@@ -78,7 +81,6 @@ const addComment = (text, id, avatarUrl, username) => {
   commentInfo.appendChild(commentInfoDesc);
   commentInfoDesc.appendChild(commentText);
 
-  btns.appendChild(likeBtn);
   btns.appendChild(editBtn);
   btns.appendChild(deleteBtn);
   commentContainer.appendChild(btns);
@@ -104,8 +106,9 @@ const handleSubmit = async (event) => {
   });
   if (response.status === 201) {
     textarea.value = "";
-    const { newCommentId, avatarUrl, username } = await response.json();
-    addComment(text, newCommentId, avatarUrl, username);
+    const { commentInfoJSON } = await response.json();
+    const commentInfo = JSON.parse(commentInfoJSON);
+    addComment(commentInfo);
   }
   btnAddEventListener();
 };
@@ -120,8 +123,6 @@ const handleDelete = async (event) => {
   }
 
   const li = deleteBtn.parentElement.parentElement.parentElement;
-
-  console.log(li);
 
   const commentId = li.dataset.id;
   const videoId = videoContainer.dataset.id;
@@ -149,13 +150,7 @@ const handleEdit = (event) => {
   }
 
   const commentSection = editBtn.parentElement.parentElement;
-  const commentContainer = commentSection.querySelector(
-    ".video__comment__container"
-  );
-
-  const commentText =
-    event.target.parentElement.parentElement.parentElement.childNodes[1]
-      .childNodes[1].innerText;
+  const commentText = commentSection.childNodes[1].childNodes[1].innerText;
 
   const videoComment = commentSection.parentElement;
 

@@ -1,3 +1,5 @@
+include ../mixins/avatar
+
 header
     a(href="/").header__logo
         i.fab.fa-youtube
@@ -15,14 +17,7 @@ header
                     a(href="/videos/upload") Upload Video
                 li 
                     a(href=`/users/${loggedInUser._id}`)
-                        if !loggedInUser.avatarUrl
-                            i.far.fa-grin-tongue
-                        else if loggedInUser.socialOnly
-                            img(src=loggedInUser.avatarUrl crossorigin="anonymous").avatar.avatar--medium
-                        else 
-                            img(src="/" + loggedInUser.avatarUrl).avatar.avatar--medium
-
-
+                        +avatar(loggedInUser, "medium")
             else
                 li 
                     a(href="/login") Login

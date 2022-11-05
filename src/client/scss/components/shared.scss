@@ -25,11 +25,18 @@
 .avatar--big {
   width: 150px;
   height: 150px;
+  span {
+    font-size: 50px;
+    font-weight: 600;
+  }
 }
 
 .avatar--medium {
   width: 40px;
   height: 40px;
+  span {
+    font-weight: 600;
+  }
 }
 
 .avatar--small {
@@ -37,6 +44,36 @@
   height: 25px;
 }
 
+.avatar--missing {
+  border-radius: 50%;
+  background-color: $gray-darker;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .error-message {
   color: red;
+}
+
+.subs-button {
+  .subsBtn {
+    all: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(223, 0, 0);
+    color: white;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    width: 120px;
+    height: 40px;
+    border-radius: 100px;
+    cursor: pointer;
+    margin-left: 15px;
+  }
+  .subbed {
+    background-color: rgb(0, 133, 11);
+  }
 }

@@ -10,14 +10,48 @@ export const home = async (req, res) => {
 };
 
 export const watch = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; // <- id of video
 
-  const video = await Video.findById(id).populate("owner").populate("comments");
+  const video = await Video.findById(id)
+    .populate("owner")
+    .populate({
+      path: "comments",
+      populate: { path: "owner" },
+    });
 
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video Not Found." });
   } else {
-    return res.render("videos/watch", { pageTitle: video.title, video });
+    if (req.session.loggedIn) {
+      let subbed = false;
+
+      const {
+        user: { _id }, // <= id of subscribing user
+      } = req.session;
+
+      const currentUser = await User.findById(_id).populate("subbedUsers");
+
+      const subbedFind = await currentUser.subbedUsers.find(
+        (user) => user._id.toString() === video.owner._id.toString()
+      );
+
+      if (subbedFind) {
+        return res.render("videos/watch", {
+          pageTitle: video.title,
+          video,
+          subbedFind,
+        });
+      } else {
+        return res.render("videos/watch", {
+          pageTitle: video.title,
+          video,
+        });
+      }
+    }
+    return res.render("videos/watch", {
+      pageTitle: video.title,
+      video,
+    });
   }
 };
 
@@ -184,8 +218,6 @@ export const createComment = async (req, res) => {
     text,
     owner: user._id,
     video: id,
-    avatarUrl: user.avatarUrl,
-    username: user.username,
   });
   video.comments.unshift(comment._id);
   video.save();
@@ -194,12 +226,9 @@ export const createComment = async (req, res) => {
   userSave.comments.unshift(comment._id);
   userSave.save();
 
-  return res.status(201).json({
-    newCommentId: comment._id,
-    avatarUrl: comment.avatarUrl,
-    username: comment.username,
-    createdAt: comment.createdAt,
-  });
+  const commentInfo = await Comment.findById(comment._id).populate("owner");
+  const commentInfoJSON = JSON.stringify(commentInfo);
+  return res.status(201).json({ commentInfoJSON });
 };
 
 let commentOwner = "";
@@ -243,15 +272,11 @@ export const editComment = async (req, res) => {
     body: { text }, // modified comment text
   } = req;
 
-  console.log(req.body.text);
-
   await checkCommentOwner(user, id);
 
   const comment = await Comment.findByIdAndUpdate(id, {
     text,
   });
-  console.log(text);
-  console.log(comment.text);
 
   return res.sendStatus(200);
 };
