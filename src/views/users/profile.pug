@@ -5,14 +5,20 @@ include ../mixins/created-ago
 
 block content 
     div.profile
-        div.profile__data
+        div#userProfileData.profile__data(data-id=user.id)
             +avatar(user, "big")
             div.profile__data__info
                 div.profile__date__info__username
                     span=user.name
                 div.profile__data__subs
                     span.subsCount=`${user.subs}`
-                    span=` ${user.subs == 1 ? "subscriber": "subscribers" }`
+                    span.subsCountUnit=` ${user.subs == 1 ? "Subscriber": "Subscribers" }`
+                if loggedIn && String(user.id) !== String(loggedInUser._id)
+                    div.subs-button
+                        if subbedFind
+                            button.subsBtn.subbed Subscribed
+                        else 
+                            button.subsBtn Subscribe
         div.profile__user-videos
             h2 #{user.name}'s Videos
             div.video-grid
@@ -38,3 +44,7 @@ block content
 
             else 
                 span.empty__message No comments found.
+
+block scripts 
+    if loggedIn
+        script(src="/static/js/likeSubs.js")

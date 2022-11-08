@@ -1,5 +1,7 @@
 const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
+const commentsCount = document.querySelector(".commentsCount");
+const commentsCountUnit = document.querySelector(".commentsCountUnit");
 
 let deleteBtns = document.querySelectorAll(".video__comment__delete");
 let editBtns = document.querySelectorAll(".video__comment__edit");
@@ -109,6 +111,9 @@ const handleSubmit = async (event) => {
     const { commentInfoJSON } = await response.json();
     const commentInfo = JSON.parse(commentInfoJSON);
     addComment(commentInfo);
+    commentsCount.innerText = parseInt(commentsCount.innerText) + 1;
+    commentsCountUnit.innerText =
+      commentsCountUnit.innerText == 1 ? " Comment" : " Comments";
   }
   btnAddEventListener();
 };
@@ -137,6 +142,9 @@ const handleDelete = async (event) => {
 
   if (response.status === 200) {
     li.remove();
+    commentsCount.innerText = parseInt(commentsCount.innerText) - 1;
+    commentsCountUnit.innerText =
+      commentsCountUnit.innerText == 1 ? " Comment" : " Comments";
   }
 };
 

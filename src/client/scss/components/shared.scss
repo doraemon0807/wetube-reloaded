@@ -77,3 +77,10 @@
     background-color: rgb(0, 133, 11);
   }
 }
+
+.liked {
+  background-color: rgba(0, 255, 0, 0.2) !important;
+  .likeVideoIcon {
+    color: red;
+  }
+}

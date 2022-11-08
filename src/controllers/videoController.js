@@ -20,33 +20,27 @@ export const watch = async (req, res) => {
     });
 
   if (!video) {
-    return res.status(404).render("404", { pageTitle: "Video Not Found." });
+    return res.status(404).render("404", { pageTitle: "Video Not Found" });
   } else {
     if (req.session.loggedIn) {
-      let subbed = false;
-
       const {
-        user: { _id }, // <= id of subscribing user
+        user: { _id }, // <= id of current user
       } = req.session;
 
-      const currentUser = await User.findById(_id).populate("subbedUsers");
+      const currentUser = await User.findById(_id)
+        .populate("subbedUsers")
+        .populate("likedVideos");
 
-      const subbedFind = await currentUser.subbedUsers.find(
-        (user) => user._id.toString() === video.owner._id.toString()
-      );
-
-      if (subbedFind) {
-        return res.render("videos/watch", {
-          pageTitle: video.title,
-          video,
-          subbedFind,
-        });
-      } else {
-        return res.render("videos/watch", {
-          pageTitle: video.title,
-          video,
-        });
-      }
+      return res.render("videos/watch", {
+        pageTitle: video.title,
+        video,
+        subbedFind: await currentUser.subbedUsers.find(
+          (user) => user._id.toString() === video.owner._id.toString()
+        ),
+        likedVideoFind: await currentUser.likedVideos.find(
+          (likedVideo) => likedVideo._id.toString() === video._id.toString()
+        ),
+      });
     }
     return res.render("videos/watch", {
       pageTitle: video.title,
@@ -62,7 +56,7 @@ export const getEdit = async (req, res) => {
   } = req.session;
   const video = await Video.findById(id);
   if (!video) {
-    return res.status(404).render("404", { pageTitle: "Video Not Found." });
+    return res.status(404).render("404", { pageTitle: "Video Not Found" });
   }
 
   if (String(video.owner) !== String(_id)) {
@@ -86,7 +80,7 @@ export const postEdit = async (req, res) => {
   } = req;
 
   if (!video) {
-    return res.status(404).render("404", { pageTitle: "Video Not Found." });
+    return res.status(404).render("404", { pageTitle: "Video Not Found" });
   }
 
   if (String(video.owner) !== String(_id)) {
@@ -148,7 +142,7 @@ export const deleteVideo = async (req, res) => {
   const video = await Video.findById(id);
 
   if (!video) {
-    return res.status(404).render("404", { pageTitle: "Video not found" });
+    return res.status(404).render("404", { pageTitle: "Video Not Found" });
   }
   if (String(video.owner) !== String(_id)) {
     return res.status(403).redirect("/");
@@ -279,4 +273,54 @@ export const editComment = async (req, res) => {
   });
 
   return res.sendStatus(200);
+};
+
+export const registerLike = async (req, res) => {
+  const { id } = req.params; // <- id of liked video
+  const {
+    user: { _id }, // <= id of current user
+  } = req.session;
+
+  const video = await Video.findById(id);
+
+  if (!video) {
+    return res.sendStatus(404);
+  }
+
+  video.meta.like = video.meta.like + 1;
+  await video.save();
+
+  const currentUser = await User.findById(_id);
+
+  currentUser.likedVideos.unshift(video._id);
+  currentUser.save();
+
+  return res.sendStatus(200);
+};
+
+export const registerUnlike = async (req, res) => {
+  const { id } = req.params; // <- id of liked video
+  const {
+    user: { _id }, // <= id of current user
+  } = req.session;
+
+  const video = await Video.findById(id);
+
+  if (!video) {
+    return res.sendStatus(404);
+  }
+
+  video.meta.like = video.meta.like - 1;
+  await video.save();
+
+  const currentUser = await User.findById(_id);
+  currentUser.likedVideos.splice(currentUser.likedVideos.indexOf(id), 1);
+  currentUser.save();
+
+  return res.sendStatus(200);
+};
+
+export const getNoVideo = async (req, res) => {
+  req.flash("error", "Video could not be found. Please check the address.");
+  return res.status(404).render("404", { pageTitle: "Video Not Found" });
 };

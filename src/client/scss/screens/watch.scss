@@ -21,11 +21,15 @@
   .video__btns {
     display: flex;
     align-items: center;
+
+    .likeVideoBtn,
     a {
+      all: unset;
       margin-left: 10px;
       background-color: rgba(235, 235, 235, 1);
       padding: 10px 20px;
       border-radius: 100px;
+      cursor: pointer;
       i {
         margin-right: 10px;
       }
