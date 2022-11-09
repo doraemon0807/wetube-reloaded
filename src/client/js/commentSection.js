@@ -126,8 +126,8 @@ const handleDelete = async (event) => {
   } else if (event.target.tagName == "BUTTON") {
     deleteBtn = event.target;
   }
-
-  const li = deleteBtn.parentElement.parentElement.parentElement;
+  const videoCommentContainer = deleteBtn.parentElement.parentElement;
+  const li = videoCommentContainer.parentElement;
 
   const commentId = li.dataset.id;
   const videoId = videoContainer.dataset.id;
@@ -141,7 +141,10 @@ const handleDelete = async (event) => {
   });
 
   if (response.status === 200) {
-    li.remove();
+    li.style.transform = "translateX(2000px)";
+    setTimeout(() => {
+      li.remove();
+    }, 800);
     commentsCount.innerText = parseInt(commentsCount.innerText) - 1;
     commentsCountUnit.innerText =
       commentsCountUnit.innerText == 1 ? " Comment" : " Comments";
@@ -174,6 +177,11 @@ const handleEdit = (event) => {
 
   commentEditContainerFormButtonIcon.className = "fas fa-check";
   commentEditContainerFormButtonIcon2.className = "fas fa-times";
+
+  commentEditContainerFormButton1.className =
+    "video__comment__edit__buttons__submit";
+  commentEditContainerFormButton2.className =
+    "video__comment__edit__buttons__cancel";
 
   commentEditContainerFormTextArea.value = commentText;
   commentEditContainerFormTextArea.id = "editTextArea";

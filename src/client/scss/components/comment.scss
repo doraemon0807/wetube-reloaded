@@ -12,8 +12,10 @@
       margin: 10px 0;
       height: 25px;
       resize: none;
+      padding: 10px;
       border-bottom: 1px solid $gray-light;
       overflow-wrap: anywhere;
+      transition: height 0.2s ease-in-out;
 
       &:focus,
       &:not(:placeholder-shown) {
@@ -56,6 +58,7 @@
 
   .video__comment {
     height: auto;
+    max-height: 500px;
     position: relative;
     padding: 15px;
     border-radius: 10px;
@@ -63,6 +66,7 @@
     background-color: $gray-lighter;
     margin-bottom: 10px;
     box-shadow: 0 1px 3px rgba(210, 210, 210, 1);
+    transition: transform 0.7s ease-in-out;
 
     .video__comment__container {
       width: 100%;
@@ -138,8 +142,22 @@
       .video__comment__edit__buttons {
         height: 100%;
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-evenly;
         align-items: center;
+
+        .video__comment__edit__buttons__submit,
+        .video__comment__edit__buttons__cancel {
+          width: 35px;
+          height: 35px;
+          border: 1px solid $gray-darker;
+          border-radius: 4px;
+          margin-right: 8px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 10px;
+          cursor: pointer;
+        }
       }
     }
   }
