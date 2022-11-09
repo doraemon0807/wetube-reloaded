@@ -78,9 +78,21 @@
   }
 }
 
+.likeButton {
+  all: unset;
+  background-color: rgba(235, 235, 235, 1);
+  padding: 10px 20px;
+  border-radius: 100px;
+  border: 1px solid $gray-light;
+  cursor: pointer;
+  span {
+    margin-left: 10px;
+  }
+}
+
 .liked {
   background-color: rgba(0, 255, 0, 0.2) !important;
-  .likeVideoIcon {
+  i {
     color: red;
   }
 }

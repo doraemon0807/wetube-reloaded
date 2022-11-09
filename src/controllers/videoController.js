@@ -29,17 +29,19 @@ export const watch = async (req, res) => {
 
       const currentUser = await User.findById(_id)
         .populate("subbedUsers")
-        .populate("likedVideos");
+        .populate("likedVideos")
+        .populate("likedComments");
 
       return res.render("videos/watch", {
         pageTitle: video.title,
         video,
-        subbedFind: await currentUser.subbedUsers.find(
+        subbedFind: currentUser.subbedUsers.find(
           (user) => user._id.toString() === video.owner._id.toString()
         ),
-        likedVideoFind: await currentUser.likedVideos.find(
+        likedVideoFind: currentUser.likedVideos.find(
           (likedVideo) => likedVideo._id.toString() === video._id.toString()
         ),
+        currentUser,
       });
     }
     return res.render("videos/watch", {
@@ -171,6 +173,7 @@ export const deleteVideo = async (req, res) => {
 
 export const search = async (req, res) => {
   let videos = [];
+  let searched = false;
   const { keyword } = req.query;
   if (keyword) {
     videos = await Video.find({
@@ -180,8 +183,15 @@ export const search = async (req, res) => {
         // $regex: new RegExp(`${keyword}$`, "i"), <- ends with
       },
     }).populate("owner");
+    searched = true;
+    console.log(searched);
   }
-  return res.render("videos/search", { pageTitle: "Search", videos });
+  return res.render("videos/search", {
+    pageTitle: "Search",
+    videos,
+    keyword,
+    searched,
+  });
 };
 
 export const registerView = async (req, res) => {
@@ -293,7 +303,7 @@ export const registerLike = async (req, res) => {
   const currentUser = await User.findById(_id);
 
   currentUser.likedVideos.unshift(video._id);
-  currentUser.save();
+  await currentUser.save();
 
   return res.sendStatus(200);
 };
@@ -315,7 +325,53 @@ export const registerUnlike = async (req, res) => {
 
   const currentUser = await User.findById(_id);
   currentUser.likedVideos.splice(currentUser.likedVideos.indexOf(id), 1);
-  currentUser.save();
+  await currentUser.save();
+
+  return res.sendStatus(200);
+};
+
+export const registerCommentLike = async (req, res) => {
+  const { id } = req.params; // <- id of liked comment
+  const {
+    user: { _id }, // <= id of current user
+  } = req.session;
+
+  const comment = await Comment.findById(id);
+
+  if (!comment) {
+    return res.sendStatus(404);
+  }
+
+  comment.like = comment.like + 1;
+  await comment.save();
+
+  const currentUser = await User.findById(_id);
+
+  currentUser.likedComments.unshift(comment._id);
+  await currentUser.save();
+
+  return res.sendStatus(200);
+};
+
+export const registerCommentUnlike = async (req, res) => {
+  const { id } = req.params; // <- id of liked comment
+  const {
+    user: { _id }, // <= id of current user
+  } = req.session;
+
+  const comment = await Comment.findById(id);
+
+  if (!comment) {
+    return res.sendStatus(404);
+  }
+
+  comment.like = comment.like - 1;
+  await comment.save();
+
+  const currentUser = await User.findById(_id);
+
+  currentUser.likedComments.splice(currentUser.likedComments.indexOf(id), 1);
+  await currentUser.save();
 
   return res.sendStatus(200);
 };

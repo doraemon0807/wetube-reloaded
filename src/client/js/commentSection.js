@@ -268,6 +268,62 @@ const restoreEditComment = (btn) => {
   editBtn.classList.remove("hidden");
 };
 
+const handleCommentLike = async (event) => {
+  event.preventDefault();
+
+  let likeCommentBtn = "";
+
+  if (event.target.tagName == "I") {
+    likeCommentBtn = event.target.parentElement;
+  } else if (event.target.tagName == "BUTTON") {
+    likeCommentBtn = event.target;
+  }
+
+  const likeCommentCount = likeCommentBtn.querySelector(".likeCommentCount");
+
+  const commentId =
+    likeCommentBtn.parentElement.parentElement.parentElement.dataset.id;
+
+  const response = await fetch(`/api/comments/${commentId}/like`, {
+    method: "POST",
+  });
+
+  if (response.status === 200) {
+    likeCommentBtn.classList.add("liked");
+    likeCommentCount.innerText = parseInt(likeCommentCount.innerText) + 1;
+    likeCommentBtn.removeEventListener("click", handleCommentLike);
+    likeCommentBtn.addEventListener("click", handleCommentUnlike);
+  }
+};
+
+const handleCommentUnlike = async (event) => {
+  event.preventDefault();
+
+  let likeCommentBtn = "";
+
+  if (event.target.tagName == "I") {
+    likeCommentBtn = event.target.parentElement;
+  } else if (event.target.tagName == "BUTTON") {
+    likeCommentBtn = event.target;
+  }
+
+  const likeCommentCount = likeCommentBtn.querySelector(".likeCommentCount");
+
+  const commentId =
+    likeCommentBtn.parentElement.parentElement.parentElement.dataset.id;
+
+  const response = await fetch(`/api/comments/${commentId}/unlike`, {
+    method: "POST",
+  });
+
+  if (response.status === 200) {
+    likeCommentBtn.classList.remove("liked");
+    likeCommentCount.innerText = parseInt(likeCommentCount.innerText) - 1;
+    likeCommentBtn.removeEventListener("click", handleCommentUnlike);
+    likeCommentBtn.addEventListener("click", handleCommentLike);
+  }
+};
+
 if (form) {
   form.addEventListener("submit", handleSubmit);
 }
@@ -283,6 +339,16 @@ const btnAddEventListener = () => {
   if (editBtns) {
     editBtns.forEach((editBtn) => {
       editBtn.addEventListener("click", handleEdit);
+    });
+  }
+  likeBtns = document.querySelectorAll(".video__comment__buttons__like");
+  if (likeBtns) {
+    likeBtns.forEach((likeBtn) => {
+      if (likeBtn.classList.contains("liked")) {
+        likeBtn.addEventListener("click", handleCommentUnlike);
+      } else {
+        likeBtn.addEventListener("click", handleCommentLike);
+      }
     });
   }
 };

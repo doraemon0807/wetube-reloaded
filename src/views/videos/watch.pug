@@ -47,11 +47,11 @@ block content
                     span DELETE
             else
                 if likedVideoFind
-                    button.likeVideoBtn.liked
+                    button.likeVideoBtn.liked.likeButton
                         i.fas.fa-heart.likeVideoIcon
                         span.likeVideoCount=video.meta.like
                 else 
-                    button.likeVideoBtn
+                    button.likeVideoBtn.likeButton
                         i.fas.fa-heart.likeVideoIcon
                         span.likeVideoCount=video.meta.like
 
@@ -107,10 +107,16 @@ block content
                                     i.fas.fa-pen
                                 button.video__comment__buttons__delete 
                                     i.fas.fa-trash-alt
-                            else 
-                                button.video__comment__buttons__like
-                                    i.fas.fa-heart.likeVideoIcon
-                                    span 0
+                            else
+                                - let likedVideoFind = currentUser.likedComments.find((likedComment) => likedComment._id.toString() === comment.id)
+                                if likedVideoFind
+                                    button.video__comment__buttons__like.liked.likeButton
+                                        i.fas.fa-heart.likeCommentIcon
+                                        span.likeCommentCount=comment.like
+                                else
+                                    button.video__comment__buttons__like.likeButton
+                                        i.fas.fa-heart.likeCommentIcon
+                                        span.likeCommentCount=comment.like
                     
         
 
