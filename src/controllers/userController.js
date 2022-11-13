@@ -340,10 +340,6 @@ export const postChangePassword = async (req, res) => {
 export const see = async (req, res) => {
   const { id } = req.params; // <- id of searched user
 
-  const {
-    user: { _id }, // <= id of current user
-  } = req.session;
-
   const user = await User.findById(id)
     .populate({
       path: "videos",
@@ -365,6 +361,10 @@ export const see = async (req, res) => {
   }
 
   if (req.session.loggedIn) {
+    const {
+      user: { _id }, // <= id of current user
+    } = req.session;
+
     const currentUser = await User.findById(_id).populate("subbedUsers");
 
     const subbedFind = await currentUser.subbedUsers.find(
@@ -404,10 +404,20 @@ export const registerSubs = async (req, res) => {
   subscribedUser.subs = subscribedUser.subs + 1;
   await subscribedUser.save();
 
-  const currentUser = await User.findById(_id).populate("subbedUsers");
+  // const currentUser = await User.findById(_id).populate("subbedUsers");
 
-  currentUser.subbedUsers.unshift(id);
-  await currentUser.save();
+  // currentUser.subbedUsers.unshift(id);
+  // await currentUser.save();
+
+  await User.findByIdAndUpdate(
+    _id,
+    {
+      $push: { subbedUsers: subscribedUser._id },
+    },
+    {
+      new: true,
+    }
+  );
 
   return res.sendStatus(200);
 };
@@ -426,10 +436,20 @@ export const registerUnsubs = async (req, res) => {
   subscribedUser.subs = subscribedUser.subs - 1;
   await subscribedUser.save();
 
-  const currentUser = await User.findById(_id).populate("subbedUsers");
+  // const currentUser = await User.findById(_id).populate("subbedUsers");
 
-  currentUser.subbedUsers.remove(id);
-  await currentUser.save();
+  // currentUser.subbedUsers.remove(id);
+  // await currentUser.save();
+
+  await User.findByIdAndUpdate(
+    _id,
+    {
+      $pull: { subbedUsers: subscribedUser._id },
+    },
+    {
+      new: true,
+    }
+  );
 
   return res.sendStatus(200);
 };

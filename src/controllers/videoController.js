@@ -21,34 +21,32 @@ export const watch = async (req, res) => {
 
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video Not Found" });
-  } else {
-    if (req.session.loggedIn) {
-      const {
-        user: { _id }, // <= id of current user
-      } = req.session;
+  } else if (req.session.loggedIn) {
+    const {
+      user: { _id }, // <= id of current user
+    } = req.session;
 
-      const currentUser = await User.findById(_id)
-        .populate("subbedUsers")
-        .populate("likedVideos")
-        .populate("likedComments");
+    const currentUser = await User.findById(_id)
+      .populate("subbedUsers")
+      .populate("likedVideos")
+      .populate("likedComments");
 
-      return res.render("videos/watch", {
-        pageTitle: video.title,
-        video,
-        subbedFind: currentUser.subbedUsers.find(
-          (user) => user._id.toString() === video.owner._id.toString()
-        ),
-        likedVideoFind: currentUser.likedVideos.find(
-          (likedVideo) => likedVideo._id.toString() === video._id.toString()
-        ),
-        currentUser,
-      });
-    }
     return res.render("videos/watch", {
       pageTitle: video.title,
       video,
+      subbedFind: currentUser.subbedUsers.find(
+        (user) => user._id.toString() === video.owner._id.toString()
+      ),
+      likedVideoFind: currentUser.likedVideos.find(
+        (likedVideo) => likedVideo._id.toString() === video._id.toString()
+      ),
+      currentUser,
     });
   }
+  return res.render("videos/watch", {
+    pageTitle: video.title,
+    video,
+  });
 };
 
 export const getEdit = async (req, res) => {
@@ -146,6 +144,7 @@ export const deleteVideo = async (req, res) => {
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video Not Found" });
   }
+
   if (String(video.owner) !== String(_id)) {
     return res.status(403).redirect("/");
   }
@@ -300,10 +299,19 @@ export const registerLike = async (req, res) => {
   video.meta.like = video.meta.like + 1;
   await video.save();
 
-  const currentUser = await User.findById(_id);
+  // const currentUser = await User.findById(_id);
+  // currentUser.likedVideos.unshift(video._id);
+  // await currentUser.save();
 
-  currentUser.likedVideos.unshift(video._id);
-  await currentUser.save();
+  await User.findByIdAndUpdate(
+    _id,
+    {
+      $push: { likedVideos: video._id },
+    },
+    {
+      new: true,
+    }
+  );
 
   return res.sendStatus(200);
 };
@@ -323,9 +331,19 @@ export const registerUnlike = async (req, res) => {
   video.meta.like = video.meta.like - 1;
   await video.save();
 
-  const currentUser = await User.findById(_id);
-  currentUser.likedVideos.splice(currentUser.likedVideos.indexOf(id), 1);
-  await currentUser.save();
+  // const currentUser = await User.findById(_id);
+  // currentUser.likedVideos.splice(currentUser.likedVideos.indexOf(id), 1);
+  // await currentUser.save();
+
+  await User.findByIdAndUpdate(
+    _id,
+    {
+      $pull: { likedVideos: video._id },
+    },
+    {
+      new: true,
+    }
+  );
 
   return res.sendStatus(200);
 };
@@ -341,14 +359,22 @@ export const registerCommentLike = async (req, res) => {
   if (!comment) {
     return res.sendStatus(404);
   }
-
   comment.like = comment.like + 1;
   await comment.save();
 
-  const currentUser = await User.findById(_id);
+  // const currentUser = await User.findById(_id);
+  // currentUser.likedComments.unshift(comment._id);
+  // await currentUser.save();
 
-  currentUser.likedComments.unshift(comment._id);
-  await currentUser.save();
+  await User.findByIdAndUpdate(
+    _id,
+    {
+      $push: { likedComments: comment._id },
+    },
+    {
+      new: true,
+    }
+  );
 
   return res.sendStatus(200);
 };
@@ -368,10 +394,19 @@ export const registerCommentUnlike = async (req, res) => {
   comment.like = comment.like - 1;
   await comment.save();
 
-  const currentUser = await User.findById(_id);
+  // const currentUser = await User.findById(_id);
+  // currentUser.likedComments.splice(currentUser.likedComments.indexOf(id), 1);
+  // await currentUser.save();
 
-  currentUser.likedComments.splice(currentUser.likedComments.indexOf(id), 1);
-  await currentUser.save();
+  await User.findByIdAndUpdate(
+    _id,
+    {
+      $pull: { likedComments: comment._id },
+    },
+    {
+      new: true,
+    }
+  );
 
   return res.sendStatus(200);
 };

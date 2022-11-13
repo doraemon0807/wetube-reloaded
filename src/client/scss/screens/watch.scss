@@ -2,6 +2,7 @@
   border-bottom: 1px solid $gray-light;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
   .video__data__info {
     display: flex;
@@ -9,18 +10,40 @@
     margin-top: 15px;
 
     .video__title {
-      font-size: 22px;
+      font-size: 20px;
+      font-weight: 600;
       margin-bottom: 15px;
     }
     .video__meta {
       margin-bottom: 20px;
-      font-size: 15px;
-      color: rgba(90, 90, 90, 1);
     }
   }
   .video__btns {
+    height: 52px;
+    position: relative;
     display: flex;
     align-items: center;
+
+    .video__btns__like {
+      margin-right: 15px;
+    }
+
+    .video__btns__delete {
+      margin-left: 10px;
+    }
+
+    .video__btns__edit,
+    .video__btns__delete {
+      background-color: rgba(235, 235, 235, 1);
+      padding: 10px 20px;
+      border-radius: 100px;
+      border: 1px solid $gray-light;
+      cursor: pointer;
+      font-size: 15px;
+      i {
+        margin-right: 10px;
+      }
+    }
   }
 }
 
@@ -49,8 +72,6 @@
       }
       .video__info__owner__subs {
         margin-top: 5px;
-        font-size: 14px;
-        color: rgba(90, 90, 90, 1);
       }
     }
 

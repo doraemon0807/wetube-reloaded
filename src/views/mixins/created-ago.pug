@@ -7,38 +7,50 @@ mixin createdAgo(createdAt)
                 case (diff <= 1): 
                     timeAgo = "Just Now";
                     break;
-                case (diff < 20): 
+                case (diff < 59): 
                     timeAgo = diff + " seconds ago";
                     break;
-                case (diff < 60): 
-                    timeAgo = "less than a minute ago";
-                    break;
-                case (diff <= 90): 
+                case (diff <= 120): 
                     timeAgo = "one minute ago";
                     break;
                 case (diff <= 3540): 
                     timeAgo = Math.round(diff / 60) + " minutes ago";
                     break;
-                case (diff <= 5400): 
+                case (diff <= 7140): 
                     timeAgo = "1 hour ago";
                     break;
                 case (diff <= 82800): 
                     timeAgo = Math.round(diff / 3600) + " hours ago";
                     break;
-                case (diff <= 129600): 
+                case (diff <= 172800): 
                     timeAgo = "1 day ago";
                     break;
-                case (diff < 604800): 
+                case (diff <= 518400): 
                     timeAgo = Math.round(diff / 86400) + " days ago";
                     break;
-                case (diff <= 777600) : 
+                case (diff <= 1209600) : 
                     timeAgo = "1 week ago";
                     break;
+                case (diff <= 1814400) :
+                    timeAgo = Math.round(diff/ 604800) + " weeks ago";
+                    break;
+                case (diff <= 5259600) :
+                    timeAgo = "1 month ago";
+                    break;
+                case (diff <= 28927800) :
+                    timeAgo = Math.round(diff/ 2629800) + " months ago";
+                    break;
+                case (diff <= 63115200) :
+                    timeAgo = "1 year ago";
+                    break;
+                case (diff > 63115200) :
+                    timeAgo = Math.round(diff/ 31557600) + " years ago";
+                    break;
                 default: 
-                     timeAgo = "on" + createdAt;
+                     timeAgo = "on " + createdAt.toLocaleDateString("Canada",{year: "numeric", month:"short", day:"numeric"})
                      break;
             }
         }
         checkTimeDiff()
 
-    span.video__comment__info__createdAt=timeAgo
+    span.video__comment__info__createdAt.grayFont=timeAgo

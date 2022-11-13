@@ -3,9 +3,6 @@ const form = document.getElementById("commentForm");
 const commentsCount = document.querySelector(".commentsCount");
 const commentsCountUnit = document.querySelector(".commentsCountUnit");
 
-let deleteBtns = document.querySelectorAll(".video__comment__delete");
-let editBtns = document.querySelectorAll(".video__comment__edit");
-
 const addComment = (comment) => {
   const videoComments = document.querySelector(".video__comments ul");
   const newComment = document.createElement("li");
@@ -22,6 +19,18 @@ const addComment = (comment) => {
 
   const commentText = document.createElement("span");
   commentText.innerText = comment.text;
+
+  const likeBtn = document.createElement("button");
+  const likeIcon = document.createElement("i");
+  const likeSpan = document.createElement("span");
+
+  likeBtn.className = "video__comment__buttons__like likeButton";
+  likeIcon.className = "fas fa-heart likeCommentIcon";
+  likeSpan.className = "likeCommentCount";
+  likeSpan.innerText = "0";
+
+  likeBtn.appendChild(likeIcon);
+  likeBtn.appendChild(likeSpan);
 
   const deleteBtn = document.createElement("button");
   const deleteIcon = document.createElement("i");
@@ -83,6 +92,7 @@ const addComment = (comment) => {
   commentInfo.appendChild(commentInfoDesc);
   commentInfoDesc.appendChild(commentText);
 
+  btns.appendChild(likeBtn);
   btns.appendChild(editBtn);
   btns.appendChild(deleteBtn);
   commentContainer.appendChild(btns);
@@ -113,7 +123,7 @@ const handleSubmit = async (event) => {
     addComment(commentInfo);
     commentsCount.innerText = parseInt(commentsCount.innerText) + 1;
     commentsCountUnit.innerText =
-      commentsCountUnit.innerText == 1 ? " Comment" : " Comments";
+      commentsCount.innerText === "1" ? " Comment" : " Comments";
   }
   btnAddEventListener();
 };
@@ -281,7 +291,7 @@ const handleCommentLike = async (event) => {
 
   let likeCommentBtn = "";
 
-  if (event.target.tagName == "I") {
+  if (event.target.tagName == "I" || event.target.tagName == "SPAN") {
     likeCommentBtn = event.target.parentElement;
   } else if (event.target.tagName == "BUTTON") {
     likeCommentBtn = event.target;
@@ -301,6 +311,8 @@ const handleCommentLike = async (event) => {
     likeCommentCount.innerText = parseInt(likeCommentCount.innerText) + 1;
     likeCommentBtn.removeEventListener("click", handleCommentLike);
     likeCommentBtn.addEventListener("click", handleCommentUnlike);
+  } else if (response.status === 400) {
+    addAlertBox(likeCommentBtn, "comment");
   }
 };
 
@@ -309,7 +321,7 @@ const handleCommentUnlike = async (event) => {
 
   let likeCommentBtn = "";
 
-  if (event.target.tagName == "I") {
+  if (event.target.tagName == "I" || event.target.tagName == "SPAN") {
     likeCommentBtn = event.target.parentElement;
   } else if (event.target.tagName == "BUTTON") {
     likeCommentBtn = event.target;
@@ -332,24 +344,99 @@ const handleCommentUnlike = async (event) => {
   }
 };
 
-if (form) {
-  form.addEventListener("submit", handleSubmit);
-}
+const addAlertBox = (btn, object) => {
+  let title = "";
+  let desc = "";
+  let text = "";
+  let link = "";
+
+  switch (object) {
+    case "video":
+      title = "Like this video?";
+      desc = "Log in to make your opinion count.";
+      text = "Log in";
+      link = "/login";
+      break;
+    case "comment":
+      title = "Like this comment?";
+      desc = "Log in to make your opinion count.";
+      text = "Log in";
+      link = "/login";
+      break;
+    case "user":
+      title = "Want to subscribe to this channel?";
+      desc = "Log in to subscribe to this channel.";
+      text = "Log in";
+      link = "/login";
+      break;
+    case "deleteVideo":
+      title = "Are you sure you want to delete?";
+      desc = "Deleted videos cannot be restored.";
+      text = "Delete";
+      link = `/${document.getElementById("videoContainer").dataset.id}/delete`;
+      break;
+  }
+
+  const alertContainer = document.createElement("div");
+  alertContainer.classList = "alertContainer";
+
+  const alert__title = document.createElement("h3");
+  const alert__description = document.createElement("span");
+  const alert__link = document.createElement("a");
+  const alert__link__span = document.createElement("span");
+  alert__title.classList = "alert__title titleFont";
+  alert__title.innerText = title;
+  alert__description.classList = "alert__description grayFont";
+  alert__description.innerText = desc;
+  alert__link.classList = "alert__link linkFont";
+  alert__link.href = link;
+  alert__link__span.innerText = text;
+
+  alert__link.appendChild(alert__link__span);
+
+  alertContainer.appendChild(alert__title);
+  alertContainer.appendChild(alert__description);
+  alertContainer.appendChild(alert__link);
+  btn.parentElement.appendChild(alertContainer);
+
+  document.body.addEventListener("click", deleteAlertBox);
+};
+
+const deleteAlertBox = (event) => {
+  const alertBox = document.querySelector(".alertContainer");
+  if (!alertBox) {
+    return;
+  }
+  if (event.target === alertBox || alertBox.contains(event.target)) {
+    return;
+  } else {
+    alertBox.remove();
+    document.body.removeEventListener("click", deleteAlertBox);
+  }
+};
 
 const btnAddEventListener = () => {
-  deleteBtns = document.querySelectorAll(".video__comment__buttons__delete");
+  if (form) {
+    form.addEventListener("submit", handleSubmit);
+  }
+
+  const deleteBtns = document.querySelectorAll(
+    ".video__comment__buttons__delete"
+  );
   if (deleteBtns) {
     deleteBtns.forEach((deleteBtn) => {
       deleteBtn.addEventListener("click", handleDelete);
     });
   }
-  editBtns = document.querySelectorAll(".video__comment__buttons__edit");
+
+  const editBtns = document.querySelectorAll(".video__comment__buttons__edit");
   if (editBtns) {
     editBtns.forEach((editBtn) => {
       editBtn.addEventListener("click", handleEdit);
     });
   }
-  likeBtns = document.querySelectorAll(".video__comment__buttons__like");
+
+  const likeBtns = document.querySelectorAll(".video__comment__buttons__like");
   if (likeBtns) {
     likeBtns.forEach((likeBtn) => {
       if (likeBtn.classList.contains("liked")) {

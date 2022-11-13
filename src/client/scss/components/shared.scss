@@ -5,9 +5,8 @@
 .video-grid {
   width: 100%;
   display: grid;
-  gap: 50px;
+  gap: 40px;
   grid-template-columns: repeat(4, 1fr);
-  margin: 0 20px;
 }
 
 .auth-switch {
@@ -71,7 +70,6 @@
     height: 40px;
     border-radius: 100px;
     cursor: pointer;
-    margin-left: 15px;
   }
   .subbed {
     background-color: rgb(0, 133, 11);
@@ -80,6 +78,7 @@
 
 .likeButton {
   all: unset;
+  position: relative;
   background-color: rgba(235, 235, 235, 1);
   padding: 10px 20px;
   border-radius: 100px;
@@ -90,9 +89,61 @@
   }
 }
 
+.alertContainer {
+  position: absolute;
+  bottom: 60px;
+  right: 0;
+  width: 320px;
+  height: auto;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 1px 3px 3px $gray-dark;
+  background-color: $gray-lighter;
+
+  .alert__title {
+    margin: 10px 20px;
+  }
+
+  .alert__description {
+    margin-bottom: 30px;
+    margin-left: 20px;
+  }
+
+  .alert__link {
+    margin-left: 10px;
+    width: 70px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 .liked {
   background-color: rgba(0, 255, 0, 0.2) !important;
   i {
     color: red;
+  }
+}
+
+.titleFont {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.grayFont {
+  color: #606060;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.linkFont {
+  color: #2d7ce2;
+  font-size: 14px;
+  font-weight: 600;
+  &:hover {
+    border-radius: 1000px;
+    background-color: #def1ff;
   }
 }

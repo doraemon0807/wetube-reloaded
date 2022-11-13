@@ -3,13 +3,13 @@
 .video-mixin-container {
   .video-mixin__thumb {
     height: 160px;
-    border-radius: 7px;
     width: 100%;
+    border-radius: 15px;
     background-color: gray;
   }
 
   .video-mixin__data {
-    margin-top: 5px;
+    margin-top: 8px;
     padding: 0px 5px;
     display: grid;
     grid-template-columns: 1fr 4fr;
@@ -20,17 +20,15 @@
 
     .video-mixin__info {
       margin: 5px;
+      margin-top: 8px;
 
       .video-mixin__title {
-        font-size: 20px;
         display: block;
         margin-bottom: 6px;
       }
 
       .video-mixin__meta {
-        color: rgba(70, 70, 70, 1);
         margin-top: 5px;
-        font-size: 13px;
 
         div {
           margin-bottom: 5px;

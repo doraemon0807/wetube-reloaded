@@ -27,6 +27,14 @@ export const publicOnlyMiddleware = (req, res, next) => {
   }
 };
 
+export const likeSubProtectorMiddleware = (req, res, next) => {
+  if (req.session.loggedIn) {
+    next();
+  } else {
+    return res.sendStatus(400);
+  }
+};
+
 export const avatarUpload = multer({
   dest: "uploads/avatars/",
   limits: {
