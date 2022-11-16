@@ -31,6 +31,7 @@ const addComment = (comment) => {
 
   likeBtn.appendChild(likeIcon);
   likeBtn.appendChild(likeSpan);
+  likeBtn.addEventListener("click", handleCommentLike);
 
   const deleteBtn = document.createElement("button");
   const deleteIcon = document.createElement("i");
@@ -39,14 +40,17 @@ const addComment = (comment) => {
   deleteIcon.className = "fas fa-trash-alt";
 
   deleteBtn.appendChild(deleteIcon);
+  deleteBtn.addEventListener("click", () => {
+    addCommentAlertBox(deleteBtn, "deleteComment");
+  });
 
   const editBtn = document.createElement("button");
   const editIcon = document.createElement("i");
 
   editBtn.className = "video__comment__buttons__edit";
   editIcon.className = "fas fa-pen";
-
   editBtn.appendChild(editIcon);
+  editBtn.addEventListener("click", handleEdit);
 
   const btns = document.createElement("div");
   btns.className = "video__comment__buttons";
@@ -125,18 +129,20 @@ const handleSubmit = async (event) => {
     commentsCountUnit.innerText =
       commentsCount.innerText === "1" ? " Comment" : " Comments";
   }
-  btnAddEventListener();
 };
 
 const handleDelete = async (event) => {
+  event.preventDefault();
   let deleteBtn = "";
 
-  if (event.target.tagName == "I") {
+  if (event.target.tagName == "SPAN") {
     deleteBtn = event.target.parentElement;
-  } else if (event.target.tagName == "BUTTON") {
+  } else if (event.target.tagName == "A") {
     deleteBtn = event.target;
   }
-  const videoCommentContainer = deleteBtn.parentElement.parentElement;
+
+  const videoCommentContainer =
+    deleteBtn.parentElement.parentElement.parentElement;
   const li = videoCommentContainer.parentElement;
 
   const commentId = li.dataset.id;
@@ -151,6 +157,10 @@ const handleDelete = async (event) => {
   });
 
   if (response.status === 200) {
+    const alertBox = document.querySelector(".alertContainer");
+    alertBox.remove();
+    document.body.removeEventListener("click", deleteCommentAlertBox);
+
     li.style.transform = "translateX(2000px)";
     setTimeout(() => {
       li.remove();
@@ -312,7 +322,7 @@ const handleCommentLike = async (event) => {
     likeCommentBtn.removeEventListener("click", handleCommentLike);
     likeCommentBtn.addEventListener("click", handleCommentUnlike);
   } else if (response.status === 400) {
-    addAlertBox(likeCommentBtn, "comment");
+    addCommentAlertBox(likeCommentBtn, "comment");
   }
 };
 
@@ -344,46 +354,35 @@ const handleCommentUnlike = async (event) => {
   }
 };
 
-const addAlertBox = (btn, object) => {
+const addCommentAlertBox = (btn, object) => {
   let title = "";
   let desc = "";
   let text = "";
   let link = "";
 
+  const alertContainer = document.createElement("div");
+  const alert__title = document.createElement("h3");
+  const alert__description = document.createElement("span");
+  const alert__link = document.createElement("a");
+  const alert__link__span = document.createElement("span");
+
   switch (object) {
-    case "video":
-      title = "Like this video?";
-      desc = "Log in to make your opinion count.";
-      text = "Log in";
-      link = "/login";
-      break;
     case "comment":
       title = "Like this comment?";
       desc = "Log in to make your opinion count.";
       text = "Log in";
       link = "/login";
       break;
-    case "user":
-      title = "Want to subscribe to this channel?";
-      desc = "Log in to subscribe to this channel.";
-      text = "Log in";
-      link = "/login";
-      break;
-    case "deleteVideo":
+    case "deleteComment":
       title = "Are you sure you want to delete?";
-      desc = "Deleted videos cannot be restored.";
+      desc = "Deleted comments cannot be restored.";
       text = "Delete";
-      link = `/${document.getElementById("videoContainer").dataset.id}/delete`;
+      alert__link.addEventListener("click", handleDelete);
       break;
   }
 
-  const alertContainer = document.createElement("div");
   alertContainer.classList = "alertContainer";
 
-  const alert__title = document.createElement("h3");
-  const alert__description = document.createElement("span");
-  const alert__link = document.createElement("a");
-  const alert__link__span = document.createElement("span");
   alert__title.classList = "alert__title titleFont";
   alert__title.innerText = title;
   alert__description.classList = "alert__description grayFont";
@@ -399,19 +398,20 @@ const addAlertBox = (btn, object) => {
   alertContainer.appendChild(alert__link);
   btn.parentElement.appendChild(alertContainer);
 
-  document.body.addEventListener("click", deleteAlertBox);
+  setTimeout(
+    () => document.body.addEventListener("click", deleteCommentAlertBox),
+    0
+  );
 };
 
-const deleteAlertBox = (event) => {
+const deleteCommentAlertBox = (event) => {
   const alertBox = document.querySelector(".alertContainer");
-  if (!alertBox) {
-    return;
-  }
+
   if (event.target === alertBox || alertBox.contains(event.target)) {
     return;
   } else {
     alertBox.remove();
-    document.body.removeEventListener("click", deleteAlertBox);
+    document.body.removeEventListener("click", deleteCommentAlertBox);
   }
 };
 
@@ -425,7 +425,9 @@ const btnAddEventListener = () => {
   );
   if (deleteBtns) {
     deleteBtns.forEach((deleteBtn) => {
-      deleteBtn.addEventListener("click", handleDelete);
+      deleteBtn.addEventListener("click", () => {
+        addCommentAlertBox(deleteBtn, "deleteComment");
+      });
     });
   }
 

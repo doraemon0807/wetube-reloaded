@@ -2,10 +2,11 @@ extends ../base
 include ../mixins/video
 
 block content 
-    form(method="GET").search__form
-        input(name="keyword", placeholder="Search by title", value=keyword, type="text")
-        button
-            i.fas.fa-search
+    div.search__container
+        form(method="GET").search__form
+            input(name="keyword", placeholder="Search by title", value=keyword, type="text")
+            button
+                i.fas.fa-search
     if searched
         div.video-grid
             each video in videos 

@@ -87,10 +87,6 @@ const handleUnlike = async (event) => {
   }
 };
 
-const handleDeleteVideoAlertBox = (event) => {
-  addAlertBox(deleteBtn, "deleteVideo");
-};
-
 const addAlertBox = (btn, object) => {
   let title = "";
   let desc = "";
@@ -100,12 +96,6 @@ const addAlertBox = (btn, object) => {
   switch (object) {
     case "video":
       title = "Like this video?";
-      desc = "Log in to make your opinion count.";
-      text = "Log in";
-      link = "/login";
-      break;
-    case "comment":
-      title = "Like this comment?";
       desc = "Log in to make your opinion count.";
       text = "Log in";
       link = "/login";
@@ -164,7 +154,9 @@ const deleteAlertBox = (event) => {
 
 const likeSubsBtnAddEventListener = () => {
   if (deleteBtn) {
-    deleteBtn.addEventListener("click", handleDeleteVideoAlertBox);
+    deleteBtn.addEventListener("click", () => {
+      addAlertBox(deleteBtn, "deleteVideo");
+    });
   }
 
   if (document.querySelector(".subsBtn")) {

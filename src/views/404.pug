@@ -2,4 +2,14 @@ extends base
 include mixins/message
 
 block content 
-    h1=pageTitle
+
+    div.error__container
+        h1.error__title Oops!!
+        if pageTitle=="Video Not Found"
+            i.error__icon.fas.fa-video-slash 
+            p.error__description The video cannot be found.
+        else if pageTitle=="User Not Found"
+            i.error__icon.fas.fa-user-slash 
+            p.error__description The user cannot be found.
+        a.error__link.linkFont(href="/")
+            span GO TO HOME

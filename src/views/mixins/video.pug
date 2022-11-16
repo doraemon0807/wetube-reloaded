@@ -9,9 +9,12 @@ mixin video(video)
             div.video-mixin__avatar
                 +avatar(video.owner, "medium")
             div.video-mixin__info
-                span.video-mixin__title.titleFont=video.title
+                a(href=`/videos/${video._id}`)
+                    span.video-mixin__title.titleFont=video.title
+                
                 div.video-mixin__meta.grayFont
-                    div #{video.owner.username||user.username}
+                    a(href=`/users/${video.owner.id}`)
+                        div #{video.owner.username||user.username}
                     span #{video.meta.views} #{video.meta.views == 1 ? "view" : "views"}    •  
                     +createdAgo(video.createdAt)
-                
+                    
