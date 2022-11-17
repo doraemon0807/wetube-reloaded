@@ -29,6 +29,9 @@ input:not(.search__form *, [type="range"]) {
   border: 1px solid $gray-dark;
   border-radius: 5px;
   margin-bottom: 5px;
+  &:focus {
+    border: 1px solid $blue-dark;
+  }
 }
 
 input[type="submit"],
@@ -38,11 +41,15 @@ input[type="submit"],
   background-color: rgba($color: $black, $alpha: 0.8);
   color: white;
   text-shadow: 1px 1px $black;
-
   text-align: center;
   cursor: pointer;
   display: block;
   margin-top: 5px;
+  border: 1px solid white;
+
+  &:hover {
+    border: 1px solid rgba($color: $blue-dark, $alpha: 0.4);
+  }
 }
 
 input[type="file"] {

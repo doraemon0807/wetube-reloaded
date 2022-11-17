@@ -286,6 +286,7 @@ export const editComment = async (req, res) => {
 
   const comment = await Comment.findByIdAndUpdate(id, {
     text,
+    edited: true,
   });
 
   return res.sendStatus(200);

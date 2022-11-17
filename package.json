@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev:server": "nodemon",
-    "dev:assets": "webpack"
+    "dev:assets": "rimraf assets && webpack --config webpack.config.js"
   },
   "author": "doraemon0807",
   "license": "MIT",

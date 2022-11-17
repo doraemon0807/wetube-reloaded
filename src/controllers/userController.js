@@ -65,7 +65,7 @@ export const postLogin = async (req, res) => {
   if (!ok) {
     return res.status(400).render("users/login", {
       pageTitle,
-      errorMessage: "Wrong password",
+      errorMessage: "Wrong password.",
     });
   }
   req.session.loggedIn = true;

@@ -1,5 +1,5 @@
 header {
-  padding: 20px 50px;
+  padding: 20px 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,22 +26,39 @@ header {
     li {
       margin: 0 15px;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 500;
       text-transform: uppercase;
       transition: transform ease-in-out 0.1s;
-      &:hover {
-        transform: scale(1.1);
+      &:hover:not(:last-child) {
+        transform: scale(1.2);
       }
     }
+
     i {
       font-size: 16px;
     }
   }
 }
 
-.header__btn {
-  background-color: $black;
-  color: $gray-lighter;
-  padding: 5px 10px;
-  border-radius: 5px;
+.header__btn__join {
+  padding: 10px 15px;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid $gray-light;
+  &:hover {
+    border-color: $blue-light;
+  }
+
+  .header__btn__join__border {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    border: 1px solid $blue-dark;
+    margin-right: 5px;
+  }
 }

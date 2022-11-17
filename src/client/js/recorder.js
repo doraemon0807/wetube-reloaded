@@ -39,11 +39,16 @@ const handleStart = () => {
     actionBtn.addEventListener("click", handleDownload);
   };
   recorder.start();
-  setTimeout(() => {
-    recorder.stop();
-    console.log(actionBtn2.style);
-    actionBtn2.classList.remove("hidden-Retake");
-  }, 3000);
+  let count = 4;
+  let countdown = setInterval(() => {
+    if (count === 0) {
+      clearInterval(countdown);
+      recorder.stop();
+      actionBtn2.classList.remove("hidden-Retake");
+    }
+    actionBtn.innerText = `Recording ends in... ${count}`;
+    count = count - 1;
+  }, 1000);
 };
 
 // const handleStop = () => {
@@ -106,7 +111,7 @@ const handleDownload = async () => {
 const init = async () => {
   actionBtn.removeEventListener("click", init);
   stream = await navigator.mediaDevices.getUserMedia({
-    audio: false,
+    audio: true,
     video: {
       width: 500,
       height: 300,

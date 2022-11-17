@@ -18,7 +18,11 @@ const addComment = (comment) => {
   createdTime.className = "video__comment__info__createdAt";
 
   const commentText = document.createElement("span");
+  commentText.className = "video__comment__info__description__span";
   commentText.innerText = comment.text;
+
+  const editedText = document.createElement("span");
+  editedText.className = "video__comment__info__edited";
 
   const likeBtn = document.createElement("button");
   const likeIcon = document.createElement("i");
@@ -93,6 +97,7 @@ const addComment = (comment) => {
   commentInfo.appendChild(commentInfoOwner);
   commentInfoOwner.appendChild(commentOwner);
   commentInfoOwner.appendChild(createdTime);
+  commentInfoOwner.appendChild(editedText);
   commentInfo.appendChild(commentInfoDesc);
   commentInfoDesc.appendChild(commentText);
 
@@ -261,9 +266,13 @@ const handleEditSubmit = async (event) => {
 
   if (response.status === 200) {
     const textSpan = li.querySelector(
-      ".video__comment__info__description span"
+      ".video__comment__info__description__span"
     );
+    console.log(textSpan);
+    const edited = li.querySelector(".video__comment__info__edited");
     textSpan.innerText = text;
+    edited.innerText = "(Edited)";
+
     restoreEditComment(submitBtn);
   }
 };
