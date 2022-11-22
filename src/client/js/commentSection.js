@@ -268,7 +268,6 @@ const handleEditSubmit = async (event) => {
     const textSpan = li.querySelector(
       ".video__comment__info__description__span"
     );
-    console.log(textSpan);
     const edited = li.querySelector(".video__comment__info__edited");
     textSpan.innerText = text;
     edited.innerText = "(Edited)";

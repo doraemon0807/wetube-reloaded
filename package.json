@@ -7,8 +7,12 @@
     "url": "git+https://github.com/doraemon0807/wetube-reloaded.git"
   },
   "scripts": {
+    "start": "node build/init.js",
+    "build": "npm run build:server && npm run build:assets",
+    "build:server": "babel src -d build",
+    "build:assets": "rimraf assets && webpack --mode=production --config webpack.config.js",
     "dev:server": "nodemon",
-    "dev:assets": "rimraf assets && webpack --config webpack.config.js"
+    "dev:assets": "rimraf assets && webpack --mode=development -w --config webpack.config.js"
   },
   "author": "doraemon0807",
   "license": "MIT",
@@ -33,7 +37,8 @@
     "regenerator-runtime": "^0.13.10"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.3",
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.20.2",
     "@babel/node": "^7.19.1",
     "@babel/preset-env": "^7.19.3",
     "babel-loader": "^8.2.5",

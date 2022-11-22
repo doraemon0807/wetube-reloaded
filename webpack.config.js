@@ -16,8 +16,7 @@ module.exports = {
       filename: "css/styles.css",
     }),
   ],
-  mode: "development",
-  watch: true, // <- keep assets running and refresh every time files are saved
+  // watch: true, // <- keep assets running and refresh every time files are saved, use only in dev mode
   output: {
     filename: "js/[name].js",
     path: path.resolve(__dirname, "assets"), // <- where to export converted file

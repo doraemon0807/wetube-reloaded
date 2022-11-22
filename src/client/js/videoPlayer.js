@@ -153,18 +153,6 @@ const handleVolumeChange = (event) => {
 };
 
 const formatTime = (seconds) => {
-  //   let startIndex = 0;
-  //   switch (true) {
-  //     case seconds >= 3600:
-  //       startIndex = 11;
-  //       break;
-  //     case seconds >= 600:
-  //       startIndex = 14;
-  //       break;
-  //     default:
-  //       startIndex = 15;
-  //       break;
-  //   }
   startIndex = seconds >= 3600 ? 11 : seconds >= 600 ? 14 : 15;
   return new Date(seconds * 1000).toISOString().substring(startIndex, 19);
 };
@@ -357,6 +345,5 @@ videoControlsVolume.addEventListener("mouseleave", handleVolumeAnimationExit);
 [handleVideoReplay, handleViews].forEach((e) => {
   video.addEventListener("ended", e);
 });
-// video.addEventListener("ended", handleVideoReplay);
 
 window.addEventListener("keydown", handleKeyDown);
