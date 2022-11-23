@@ -1,4 +1,20 @@
 import multer from "multer";
+import multerS3 from "multer-S3";
+import { S3Client } from "@aws-sdk/client-s3";
+
+const s3 = new S3Client({
+  region: "us-east-2",
+  credentials: {
+    accessKeyId: process.env.AWS_ID,
+    secretAccessKey: process.env.AWS_SECRET,
+  },
+});
+
+const multerUploader = multerS3({
+  s3: s3,
+  bucket: "wetube-reloaded-2022",
+  acl: "public-read",
+});
 
 // middleware that saves info from backend to locals, accessible from any views
 export const localsMiddleware = (req, res, next) => {
@@ -40,6 +56,7 @@ export const avatarUpload = multer({
   limits: {
     fileSize: 3000000,
   },
+  storage: multerUploader,
 });
 
 export const videoUpload = multer({
@@ -47,4 +64,5 @@ export const videoUpload = multer({
   limits: {
     fileSize: 10000000,
   },
+  storage: multerUploader,
 });

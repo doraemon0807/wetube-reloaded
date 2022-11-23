@@ -5,7 +5,10 @@ include ../mixins/avatar
 block content 
     div.video
         div#videoContainer(data-id=video._id)
-            video(src="/" + video.fileUrl).videoMedia
+            if video.fileUrl.includes("http")
+                video(src=video.fileUrl crossorigin).videoMedia
+            else
+                video(src= "/" + video.fileUrl crossorigin).videoMedia
             div#videoControls.videoControls
                 div.videoControls__timeline
                     input(type="range", step=1 value=0, min=0)#timeline

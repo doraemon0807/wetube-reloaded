@@ -158,9 +158,11 @@ const formatTime = (seconds) => {
 };
 
 const handleLoadedMetadata = () => {
-  totalTime.innerText = formatTime(Math.floor(video.duration));
-  currentTime.innerText = formatTime(Math.floor(video.currentTime));
-  timeline.max = Math.floor(video.duration);
+  if (!isNaN(video.duration)) {
+    totalTime.innerText = formatTime(Math.floor(video.duration));
+    currentTime.innerText = formatTime(Math.floor(video.currentTime));
+    timeline.max = Math.floor(video.duration);
+  }
 };
 
 const handleTimeUpdate = () => {
@@ -325,11 +327,12 @@ play.addEventListener("click", handlePlayClick);
 mute.addEventListener("click", handleMute);
 volumeRange.addEventListener("change", handleVolumeChange);
 volumeRange.addEventListener("input", handleVolumeInput);
-video.addEventListener("loadedmetadata", handleLoadedMetadata);
 
-[handleTimeUpdate, handleTimelineColor].forEach((e) => {
-  video.addEventListener("timeupdate", e);
-});
+video.addEventListener("canplay", handleLoadedMetadata);
+handleLoadedMetadata();
+
+video.addEventListener("timeupdate", handleTimeUpdate);
+video.addEventListener("timeupdate", handleTimelineColor);
 
 timeline.addEventListener("change", handleTimelineChange);
 timeline.addEventListener("input", handleTimelineInput);

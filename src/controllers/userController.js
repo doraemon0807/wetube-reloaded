@@ -265,12 +265,11 @@ export const postEdit = async (req, res) => {
       errorMessage: "This username is already in use.",
     });
   }
-
   const updatedUser = await User.findByIdAndUpdate(
     _id, // <- find by id
     {
       // <-- update with these values
-      avatarUrl: file ? file.path : avatarUrl, // <- if file doesn't exist, keep avatarUrl
+      avatarUrl: file ? file.location : avatarUrl, // <- if file doesn't exist, keep avatarUrl
       name,
       email,
       username,

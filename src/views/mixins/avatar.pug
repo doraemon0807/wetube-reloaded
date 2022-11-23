@@ -7,23 +7,17 @@ mixin avatar(user, size)
                 if !user.avatarUrl
                     div.avatar.avatar--big.avatar--missing
                         span=user.username.slice(1,2).toUpperCase()
-                else if user.avatarUrl.includes("githubusercontent.com") || user.avatarUrl.includes("kakaocdn.net")
-                    img(src=user.avatarUrl crossorigin="anonymous").avatar.avatar--big
                 else 
-                    img(src="/" + user.avatarUrl).avatar.avatar--big
+                    img(src=user.avatarUrl crossorigin="anonymous").avatar.avatar--big
             when "medium"
                 if !user.avatarUrl
                     div.avatar.avatar--medium.avatar--missing
                         span=user.username.slice(1,2).toUpperCase()
-                else if user.avatarUrl.includes("githubusercontent.com") || user.avatarUrl.includes("kakaocdn.net")
-                    img(src=user.avatarUrl crossorigin="anonymous").avatar.avatar--medium
                 else 
-                    img(src="/" + user.avatarUrl).avatar.avatar--medium
+                    img(src=user.avatarUrl crossorigin="anonymous").avatar.avatar--medium
             when "small"
                 if !user.avatarUrl
                     div.avatar.avatar--small.avatar--missing
                         span=user.username.slice(1,2).toUpperCase()
-                else if user.avatarUrl.includes("githubusercontent.com") || user.avatarUrl.includes("kakaocdn.net")
-                    img(src=user.avatarUrl crossorigin="anonymous").avatar.avatar--small
                 else 
-                    img(src="/" + user.avatarUrl).avatar.avatar--small
+                    img(src=user.avatarUrl crossorigin="anonymous").avatar.avatar--small
