@@ -51,14 +51,6 @@ const handleStart = () => {
   }, 1000);
 };
 
-// const handleStop = () => {
-//   actionBtn.innerText = "Download Recording";
-//   actionBtn.removeEventListener("click", handleStop);
-//   actionBtn.addEventListener("click", handleDownload);
-
-//   recorder.stop();
-// };
-
 const handleDownload = async () => {
   actionBtn2.classList.add("hidden-Retake");
   actionBtn.removeEventListener("click", handleDownload);
