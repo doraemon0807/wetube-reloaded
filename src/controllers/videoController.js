@@ -29,7 +29,7 @@ export const watch = async (req, res) => {
   //   videoPath = path.join(__dirname, "../..", video.fileUrl);
   // }
 
-  console.log(video.fileUrl);
+  console.log(video);
 
   // if (!video || !fs.existsSync(videoPath)) {
   if (!video) {
