@@ -1,5 +1,9 @@
 import express from "express";
-import { protectorMiddleware, videoUpload } from "../middlewares";
+import {
+  protectorMiddleware,
+  videoUpload,
+  checkVideoExists,
+} from "../middlewares";
 
 import {
   watch,
@@ -13,7 +17,7 @@ import {
 
 const videoRouter = express.Router();
 
-videoRouter.get("/:id([0-9a-f]{24})", watch);
+videoRouter.get("/:id([0-9a-f]{24})", checkVideoExists, watch);
 
 videoRouter
   .route("/upload")

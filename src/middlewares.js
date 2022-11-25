@@ -1,6 +1,7 @@
 import multer from "multer";
 import multerS3 from "multer-s3";
 import { S3Client } from "@aws-sdk/client-s3";
+import Video from "./models/Video";
 
 // middleware that saves info from backend to locals, accessible from any views
 const isHeroku = process.env.NODE_ENV === "production";
@@ -40,13 +41,26 @@ export const likeSubProtectorMiddleware = (req, res, next) => {
   }
 };
 
-export const s3 = new S3Client({
+const s3 = new S3Client({
   region: "us-east-2",
   credentials: {
     accessKeyId: process.env.AWS_ID,
     secretAccessKey: process.env.AWS_SECRET,
   },
 });
+
+export const checkVideoExists = async (req, res, next) => {
+  const { id } = req.params;
+
+  const video = await Video.findById(id);
+
+  const exists = await s3.getObject({
+    bucket: "wetube-reloaded-2022",
+    Key: `videos/${video.fileUrl.split("/")[4]}`,
+  });
+  console.log(exists);
+  next();
+};
 
 const s3ImageUploader = multerS3({
   s3: s3,
