@@ -4,6 +4,7 @@ const video = document.getElementById("preview");
 const actionBtn = document.getElementById("actionBtn");
 const previewTxt = document.getElementById("preview_unavailable");
 const actionBtn2 = document.getElementById("actionBtn2");
+const recordingIcon = document.getElementById("recordingIcon");
 
 let stream;
 let recorder;
@@ -26,9 +27,11 @@ const downloadFile = (fileUrl, fileName) => {
 const handleStart = () => {
   actionBtn.innerText = "Recording...";
   actionBtn.disabled = true;
+  recordingIcon.classList.remove("hidden");
   actionBtn.removeEventListener("click", handleStart);
   recorder = new MediaRecorder(stream, { mimeType: "video/webm" });
   recorder.ondataavailable = (event) => {
+    recordingIcon.classList.add("hidden");
     videoFile = URL.createObjectURL(event.data);
     video.srcObject = null;
     video.src = videoFile;

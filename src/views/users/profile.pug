@@ -10,6 +10,9 @@ block content
             div.profile__data__info
                 div.profile__date__info__username
                     span=user.name
+                    if loggedIn && String(user.id) === String(loggedInUser._id)
+                        a.profile__info__edit(href="/users/edit")
+                            i.fas.fa-pen
                 div.profile__data__subs
                     span.subsCount=`${user.subs}`
                     span.subsCountUnit=` ${user.subs == 1 ? "Subscriber": "Subscribers" }`

@@ -19,7 +19,10 @@ export const watch = async (req, res) => {
       populate: { path: "owner" },
     });
 
-  if (!video) {
+  const fs = require("fs");
+  const path = require("path");
+
+  if (!video || !fs.existsSync(path.join(__dirname, "../..", video.fileUrl))) {
     return res.status(404).render("404", {
       pageTitle: "Video Not Found",
     });

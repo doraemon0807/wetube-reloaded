@@ -6,6 +6,10 @@ block content
             div.upload__recording__preview
                 span#preview_unavailable Preview Unavailable
                 video#preview
+                div#recordingIcon.recording__container.hidden
+                    div.recording__container__inner
+                        div.recording__container__outer
+                        div.recording__container__outer.recording--animation
             div.upload__recording__button
                 button#actionBtn Turn on the webcam/mic
                 button#actionBtn2.hidden-Retake Retake
@@ -20,6 +24,8 @@ block content
             input(name="description", placeholder="Description",required, type="text", minlength=10)
             input(name="hashtags", placeholder="Hashtags, separated by comma",required, type="text")
             input(type="submit", value="Upload")
+
+
 
 block scripts 
     script(src="/static/js/recorder.js")
