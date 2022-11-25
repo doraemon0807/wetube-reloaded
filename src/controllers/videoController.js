@@ -23,13 +23,11 @@ export const watch = async (req, res) => {
   const path = require("path");
 
   let videoExists;
-
-  console.log(video);
-  console.log("hello?");
-
-  // s3.getObject(
-  //   {bucket: "wetube-reloaded-2022", Key: ""}
-  // )
+  s3.getObject({
+    bucket: "wetube-reloaded-2022",
+    Key: `videos/${video.fileUrl.split("/")[4]}`,
+  });
+  console.log(s3);
   // if (res.locals.isHeroku) {
   //   console.log(video.fileUrl);
   // } else {
