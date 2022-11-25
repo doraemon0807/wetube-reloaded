@@ -23,13 +23,16 @@ export const watch = async (req, res) => {
   const path = require("path");
 
   let videoPath;
-  if (res.locals.isHeroku) {
-    console.log(video.fileUrl);
-  } else {
-    videoPath = path.join(__dirname, "../..", video.fileUrl);
-  }
+  // if (res.locals.isHeroku) {
+  //   console.log(video.fileUrl);
+  // } else {
+  //   videoPath = path.join(__dirname, "../..", video.fileUrl);
+  // }
 
-  if (!video || !fs.existsSync(videoPath)) {
+  console.log(video.fileUrl);
+
+  // if (!video || !fs.existsSync(videoPath)) {
+  if (!video) {
     return res.status(404).render("404", {
       pageTitle: "Video Not Found",
     });
