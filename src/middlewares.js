@@ -54,7 +54,7 @@ export const checkVideoExists = async (req, res, next) => {
 
   const video = await Video.findById(id);
 
-  const exists = await s3.getObject({
+  const exists = await s3.headObject({
     bucket: "wetube-reloaded-2022",
     Key: `videos/${video.fileUrl.split("/")[4]}`,
   });
