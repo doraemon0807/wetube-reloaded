@@ -22,16 +22,20 @@ export const watch = async (req, res) => {
   const fs = require("fs");
   const path = require("path");
 
-  let videoPath;
-  // if (res.locals.isHeroku) {
-  //   console.log(video.fileUrl);
-  // } else {
-  //   videoPath = path.join(__dirname, "../..", video.fileUrl);
-  // }
+  let videoExists;
 
   console.log(video);
 
-  // if (!video || !fs.existsSync(videoPath)) {
+  // s3.getObject(
+  //   {bucket: "wetube-reloaded-2022", Key: ""}
+  // )
+  // if (res.locals.isHeroku) {
+  //   console.log(video.fileUrl);
+  // } else {
+  //   videoExists = fs.existsSync(path.join(__dirname, "../..", video.fileUrl)))
+  // }
+
+  // if (!video || !videoExists {
   if (!video) {
     return res.status(404).render("404", {
       pageTitle: "Video Not Found",
