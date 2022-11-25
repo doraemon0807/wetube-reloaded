@@ -74,7 +74,7 @@ block content
             div.video__info__owner
                 div.video__info__owner__name
                     a(href=`/users/${video.owner.id}`)
-                        span=video.owner.username
+                        span=video.owner.name
                 div.video__info__owner__subs.grayFont#subsCount
                     span.subsCount=`${video.owner.subs}`
                     span.subsCountUnit=`${video.owner.subs == 1 ? " Subscriber": " Subscribers" }`
@@ -103,7 +103,7 @@ block content
                             +avatar(comment.owner, "medium")
                         div.video__comment__info
                             div.video__comment__info__owner
-                                div.video__comment__info__owner__username=comment.owner.username
+                                div.video__comment__info__owner__username=comment.owner.name
                                 +createdAgo(comment.createdAt)
                                 span.video__comment__info__edited=`${comment.edited? "(Edited)" : ""}`
                             div.video__comment__info__description

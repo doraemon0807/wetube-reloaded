@@ -6,9 +6,9 @@ block content
     form(method="POST", enctype="multipart/form-data").edit-profile__form
         label(for="avatar") Avatar
         input(name="avatar", type="file", id="avatar", accept="image/*")
-        input(name="name", type="text", required, placeholder="Name", value=loggedInUser.name)
+        input(name="name", type="text", required, placeholder="Name", value=loggedInUser.name, maxlength=20)
         input(name="email", type="email", required, placeholder="Email", value=loggedInUser.email)
-        input(name="username", type="text", required, placeholder="Username", value=loggedInUser.username)
+        input(name="username", type="text", required, placeholder="Username", value=loggedInUser.username, maxlength=20)
         input(name="location", type="text", placeholder="Location", value=loggedInUser.location)
         input(type="submit", placeholder="", value="Update Profile")
 

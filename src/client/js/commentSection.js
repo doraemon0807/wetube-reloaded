@@ -10,7 +10,7 @@ const addComment = (comment) => {
   newComment.className = "video__comment";
 
   const commentOwner = document.createElement("span");
-  commentOwner.innerText = comment.owner.username;
+  commentOwner.innerText = comment.owner.name;
   commentOwner.className = "video__comment__info__owner__username";
 
   const createdTime = document.createElement("span");

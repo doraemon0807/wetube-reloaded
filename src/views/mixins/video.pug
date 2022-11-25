@@ -14,7 +14,7 @@ mixin video(video)
                 
                 div.video-mixin__meta.grayFont
                     a(href=`/users/${video.owner.id}`)
-                        div #{video.owner.username||user.username}
+                        div #{video.owner.name||user.name}
                     span #{video.meta.views} #{video.meta.views == 1 ? "view" : "views"}    •  
                     +createdAgo(video.createdAt)
                     
