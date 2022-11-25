@@ -22,7 +22,14 @@ export const watch = async (req, res) => {
   const fs = require("fs");
   const path = require("path");
 
-  if (!video || !fs.existsSync(path.join(__dirname, "../..", video.fileUrl))) {
+  let videoPath;
+  if (res.locals.isHeroku) {
+    console.log(video.fileUrl);
+  } else {
+    videoPath = path.join(__dirname, "../..", video.fileUrl);
+  }
+
+  if (!video || !fs.existsSync(videoPath)) {
     return res.status(404).render("404", {
       pageTitle: "Video Not Found",
     });
@@ -116,13 +123,12 @@ export const postUpload = async (req, res) => {
   } = req.session;
   const { video, thumb } = req.files; // <- same as const fileUrl = req.file.path
   const { title, description, hashtags } = req.body;
-  const isHeroku = process.env.NODE_ENV === "production";
   try {
     const newVideo = await Video.create({
       title,
       description,
-      fileUrl: isHeroku ? video[0].location : video[0].path,
-      thumbUrl: isHeroku
+      fileUrl: res.locals.isHeroku ? video[0].location : video[0].path,
+      thumbUrl: res.locals.isHeroku
         ? Video.changePathFormula(thumb[0].location)
         : Video.changePathFormula(thumb[0].path),
       owner: _id,
