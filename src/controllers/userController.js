@@ -175,6 +175,7 @@ export const finishKakaoLogin = async (req, res) => {
   const baseUrl = `https://kauth.kakao.com/oauth/token`;
   const config = {
     client_id: process.env.KAKAO_CLIENT,
+    redirect_uri: process.env.KAKAO_REDIRECT,
     client_secret: process.env.KAKAO_SECRET,
     code: req.query.code,
     grant_type: "authorization_code",
@@ -193,26 +194,25 @@ export const finishKakaoLogin = async (req, res) => {
 
   if ("access_token" in tokenRequest) {
     const { access_token } = tokenRequest;
-    const apiUrl = "https://kapi.kakao.com";
-    const userData = (
-      await (
-        await fetch(`${apiUrl}/v2/user/me`, {
-          //method: "GET",
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        })
-      ).json()
-    ).kakao_account;
 
-    let user = await User.findOne({ email: userData.email });
+    const apiUrl = "https://kapi.kakao.com";
+    const userData = await (
+      await fetch(`${apiUrl}/v2/user/me`, {
+        //method: "GET",
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+    ).json();
+
+    let user = await User.findOne({ email: userData.kakao_account.email });
     //If user's account doesn't exist already: create an account
     if (!user) {
       user = await User.create({
-        avatarUrl: userData.profile.thumbnail_image_url,
-        name: userData.profile.nickname,
-        username: userData.profile.nickname,
-        email: userData.email,
+        avatarUrl: userData.properties.thumbnail_image,
+        name: userData.properties.nickname,
+        username: userData.properties.nickname,
+        email: userData.kakao_account.email,
         password: "",
         socialOnly: true,
       });
