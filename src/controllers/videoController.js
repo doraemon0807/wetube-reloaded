@@ -25,6 +25,7 @@ export const watch = async (req, res) => {
   let videoExists;
 
   console.log(video);
+  console.log("hello?");
 
   // s3.getObject(
   //   {bucket: "wetube-reloaded-2022", Key: ""}
