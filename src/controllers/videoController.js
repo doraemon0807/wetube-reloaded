@@ -1,8 +1,6 @@
 import Comment from "../models/Comment";
 import User from "../models/User";
 import Video from "../models/Video";
-import { fs } from "fs";
-import { path } from "path";
 
 export const home = async (req, res) => {
   const videos = await Video.find({})
@@ -21,15 +19,6 @@ export const watch = async (req, res) => {
       populate: { path: "owner" },
     });
 
-  let videoExists;
-
-  // if (res.locals.isHeroku) {
-  //   console.log(video.fileUrl);
-  // } else {
-  //   videoExists = fs.existsSync(path.join(__dirname, "../..", video.fileUrl)))
-  // }
-
-  // if (!video || !videoExists {
   if (!video) {
     return res.status(404).render("404", {
       pageTitle: "Video Not Found",

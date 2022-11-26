@@ -2,6 +2,7 @@ import multer from "multer";
 import multerS3 from "multer-s3";
 import aws from "aws-sdk";
 import Video from "./models/Video";
+import User from "./models/User";
 
 import { deleteVideo } from "./controllers/videoController";
 
@@ -55,25 +56,48 @@ export const checkVideoExists = async (req, res, next) => {
 
   const video = await Video.findById(id);
 
-  const videoParams = {
+  const awsParams = {
     Bucket: "wetube-reloaded-2022",
     Key: `videos/${video.fileUrl.split("/")[4]}`,
   };
-  const thumbParams = {
-    Bucket: "wetube-reloaded-2022",
-    Key: `videos/${video.thumbUrl.split("/")[4]}`,
-  };
-  console.log("Ready to delete");
+
   try {
-    await s3.headObject(videoParams).promise();
+    if (isHeroku) {
+      await s3.headObject(awsParams).promise();
+    } else {
+      fs.existsSync(path.join(__dirname, "../..", video.fileUrl));
+    }
     next();
   } catch (error) {
-    console.log("File missing in AWS");
-    s3.deleteObject(thumbParams, (err, data) => {
-      if (err) console.log(err);
-      else console.log(data + "deleted");
-    });
-    console.log("Thumbnail deleted from AWS");
+    if (isHeroku) {
+      const thumbParams = {
+        Bucket: "wetube-reloaded-2022",
+        Key: `videos/${video.thumbUrl.split("/")[4]}`,
+      };
+
+      s3.deleteObject(thumbParams, (err, data) => {
+        if (err) console.log(err);
+        else console.log("thumbnail deleted");
+      });
+    }
+
+    if (video.comments) {
+      for (const comment of video.comments) {
+        let commentUser = (await User.find({ comments: comment }))[0];
+        if (commentUser) {
+          commentUser.comments.splice(commentUser.comments.indexOf(comment), 1);
+          await commentUser.save();
+          await Comment.findByIdAndDelete(comment);
+        }
+      }
+    }
+
+    const user = await User.findById(video.owner);
+    user.videos.splice(user.videos.indexOf(id), 1);
+    user.save();
+
+    await Video.findByIdAndDelete(id);
+
     return res.status(404).render("404", {
       pageTitle: "Video Not Found",
     });
