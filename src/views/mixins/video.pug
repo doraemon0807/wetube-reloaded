@@ -4,7 +4,7 @@ include ./avatar
 mixin video(video)
     div.video-mixin-container
         a(href=`/videos/${video._id}`).video-mixin-anchor
-            img.video-mixin__thumb(src=video.thumbUrl crossorigin)
+            img.video-mixin__thumb(src="/" + video.thumbUrl crossorigin)
         div.video-mixin__data
             div.video-mixin__avatar
                 +avatar(video.owner, "medium")

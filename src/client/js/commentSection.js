@@ -1,3 +1,5 @@
+import { isHeroku } from "./main.js";
+
 const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
 const commentsCount = document.querySelector(".commentsCount");
@@ -86,7 +88,13 @@ const addComment = (comment) => {
   } else {
     const avatar = document.createElement("img");
     avatar.className = "avatar avatar--medium";
-    avatar.src = comment.owner.avatarUrl;
+
+    if (isHeroku || comment.owner.avatarUrl.includes(".com")) {
+      avatar.src = comment.owner.avatarUrl;
+    } else {
+      avatar.src = "/" + comment.owner.avatarUrl;
+    }
+
     avatar.crossOrigin = "anonymous";
     commentAvatar.appendChild(avatar);
   }
