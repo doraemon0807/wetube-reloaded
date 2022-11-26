@@ -3,6 +3,7 @@ import {
   protectorMiddleware,
   videoUpload,
   checkVideoExists,
+  deleteVideoFromDb,
 } from "../middlewares";
 
 import {
@@ -39,7 +40,7 @@ videoRouter
 
 videoRouter
   .route("/:id([0-9a-f]{24})/delete")
-  .all(protectorMiddleware)
+  .all(protectorMiddleware, deleteVideoFromDb)
   .get(deleteVideo);
 
 videoRouter.get("/:falseid", getNoVideo);

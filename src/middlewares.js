@@ -4,7 +4,8 @@ import aws from "aws-sdk";
 import Video from "./models/Video";
 import User from "./models/User";
 
-import { deleteVideo } from "./controllers/videoController";
+import fs from "fs";
+import path from "path";
 
 // middleware that saves info from backend to locals, accessible from any views
 const isHeroku = process.env.NODE_ENV === "production";
@@ -55,52 +56,143 @@ export const checkVideoExists = async (req, res, next) => {
   const { id } = req.params;
 
   const video = await Video.findById(id);
-
-  const awsParams = {
-    Bucket: "wetube-reloaded-2022",
-    Key: `videos/${video.fileUrl.split("/")[4]}`,
-  };
-
-  try {
-    if (isHeroku) {
-      await s3.headObject(awsParams).promise();
-    } else {
-      fs.existsSync(path.join(__dirname, "../..", video.fileUrl));
-    }
-    next();
-  } catch (error) {
-    if (isHeroku) {
-      const thumbParams = {
-        Bucket: "wetube-reloaded-2022",
-        Key: `videos/${video.thumbUrl.split("/")[4]}`,
-      };
-
-      s3.deleteObject(thumbParams, (err, data) => {
-        if (err) console.log(err);
-        else console.log("thumbnail deleted");
-      });
-    }
-
-    if (video.comments) {
-      for (const comment of video.comments) {
-        let commentUser = (await User.find({ comments: comment }))[0];
-        if (commentUser) {
-          commentUser.comments.splice(commentUser.comments.indexOf(comment), 1);
-          await commentUser.save();
-          await Comment.findByIdAndDelete(comment);
+  if (video) {
+    try {
+      if (isHeroku) {
+        const awsParams = {
+          Bucket: "wetube-reloaded-2022",
+          Key: `videos/${video.fileUrl.split("/")[4]}`,
+        };
+        await s3.headObject(awsParams).promise();
+      } else {
+        if (!fs.existsSync(path.join(__dirname, "..", video.fileUrl))) {
+          deleteFromDb(id, video, "videos");
+          return res.status(404).render("404", {
+            pageTitle: "Video Not Found",
+          });
         }
       }
+      next();
+    } catch (error) {
+      deleteFromDb(id, video, "videos");
+      return res.status(404).render("404", {
+        pageTitle: "Video Not Found",
+      });
     }
-
-    const user = await User.findById(video.owner);
-    user.videos.splice(user.videos.indexOf(id), 1);
-    user.save();
-
-    await Video.findByIdAndDelete(id);
-
+  } else {
     return res.status(404).render("404", {
       pageTitle: "Video Not Found",
     });
+  }
+};
+
+export const deleteVideoFromDb = async (req, res, next) => {
+  const { id } = req.params; // <- video ID
+  const video = await Video.findById(id);
+  deleteFromDb(id, video, "videos");
+  next();
+};
+
+export const deleteAvatarFromDb = async (req, res, next) => {
+  const {
+    user: { _id }, // <= id of current user
+  } = req.session;
+  const user = await User.findById(_id);
+  if (!user.avatarUrl.includes(".com")) {
+    deleteFromDb(_id, user, "images");
+  }
+  next();
+};
+
+const deleteFromDb = async (id, object, type) => {
+  switch (type) {
+    case "videos":
+      if (isHeroku) {
+        try {
+          const thumbParams = {
+            Bucket: "wetube-reloaded-2022",
+            Key: `${type}/${object.thumbUrl.split("/")[4]}`,
+          };
+
+          s3.deleteObject(thumbParams, (err, data) => {
+            if (err) console.log(err);
+            else console.log("thumbnail deleted");
+          });
+        } catch (error) {
+          console.log(error);
+        }
+
+        try {
+          const videoParams = {
+            Bucket: "wetube-reloaded-2022",
+            Key: `${type}/${object.thumbUrl.split("/")[4]}`,
+          };
+
+          s3.deleteObject(videoParams, (err, data) => {
+            if (err) console.log(err);
+            else console.log("thumbnail deleted");
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          fs.unlinkSync(path.join(__dirname, "..", object.thumbUrl));
+        } catch (error) {
+          console.log(error);
+        }
+        try {
+          fs.unlinkSync(path.join(__dirname, "..", object.fileUrl));
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      if (object.comments) {
+        for (const comment of object.comments) {
+          let commentUser = (await User.find({ comments: comment }))[0];
+          if (commentUser) {
+            commentUser.comments.splice(
+              commentUser.comments.indexOf(comment),
+              1
+            );
+            await commentUser.save();
+            await Comment.findByIdAndDelete(comment);
+          }
+        }
+      }
+
+      const user = await User.findById(object.owner);
+      user.videos.splice(user.videos.indexOf(id), 1);
+      user.save();
+
+      await Video.findByIdAndDelete(id);
+
+      break;
+
+    case "images":
+      if (isHeroku) {
+        try {
+          const avatarParam = {
+            Bucket: "wetube-reloaded-2022",
+            Key: `${type}/${object.avatarUrl.split("/")[4]}`,
+          };
+
+          s3.deleteObject(avatarParam, (err, data) => {
+            if (err) console.log(err);
+            else console.log("avatar deleted");
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          fs.unlinkSync(path.join(__dirname, "..", object.avatarUrl));
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      break;
   }
 };
 
