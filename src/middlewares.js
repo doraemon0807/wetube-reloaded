@@ -57,8 +57,8 @@ export const checkVideoExists = async (req, res, next) => {
   try {
     await s3
       .headObject({
-        bucket: "wetube-reloaded-2022",
-        key: `videos/${video.fileUrl.split("/")[4]}`,
+        Bucket: "wetube-reloaded-2022",
+        Key: `videos/${video.fileUrl.split("/")[4]}`,
       })
       .promise();
     console.log("SUCCESS!");
