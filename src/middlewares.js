@@ -63,17 +63,19 @@ export const checkVideoExists = async (req, res, next) => {
     Bucket: "wetube-reloaded-2022",
     Key: `videos/${video.thumbUrl.split("/")[4]}`,
   };
-
+  console.log("Ready to delete");
   try {
     await s3.headObject(videoParams).promise();
     next();
   } catch (error) {
+    console.log("File missing in AWS");
     s3.deleteObject(thumbParams, (err, data) => {
       if (err) console.log(err);
       else console.log(data + "deleted");
     });
-
+    console.log("Deleted from AWS");
     deleteVideo();
+    console.log("Deleted from Mongo");
     return res.status(404).render("404", {
       pageTitle: "Video Not Found",
     });
