@@ -1,6 +1,6 @@
 import multer from "multer";
 import multerS3 from "multer-s3";
-import { S3Client } from "@aws-sdk/client-s3";
+import aws from "aws-sdk";
 import Video from "./models/Video";
 
 // middleware that saves info from backend to locals, accessible from any views
@@ -41,8 +41,7 @@ export const likeSubProtectorMiddleware = (req, res, next) => {
   }
 };
 
-const s3 = new S3Client({
-  region: "us-east-2",
+const s3 = new aws.S3({
   credentials: {
     accessKeyId: process.env.AWS_ID,
     secretAccessKey: process.env.AWS_SECRET,

@@ -1,6 +1,8 @@
 import Comment from "../models/Comment";
 import User from "../models/User";
 import Video from "../models/Video";
+import { fs } from "fs";
+import { path } from "path";
 
 export const home = async (req, res) => {
   const videos = await Video.find({})
@@ -18,9 +20,6 @@ export const watch = async (req, res) => {
       path: "comments",
       populate: { path: "owner" },
     });
-
-  const fs = require("fs");
-  const path = require("path");
 
   let videoExists;
 
