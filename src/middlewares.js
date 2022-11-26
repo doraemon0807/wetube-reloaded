@@ -49,8 +49,6 @@ const s3 = new aws.S3({
 });
 
 export const checkVideoExists = async (req, res, next) => {
-  const { id } = req.params;
-
   const video = await Video.findById(id);
 
   console.log(video.fileUrl.split("/")[4]);
@@ -61,11 +59,12 @@ export const checkVideoExists = async (req, res, next) => {
         Key: `videos/${video.fileUrl.split("/")[4]}`,
       })
       .promise();
-    console.log("SUCCESS!");
+    next();
   } catch (error) {
-    console.log("ERROR!!" + error);
+    return res.status(404).render("404", {
+      pageTitle: "Video Not Found",
+    });
   }
-  next();
 };
 
 const s3ImageUploader = multerS3({
