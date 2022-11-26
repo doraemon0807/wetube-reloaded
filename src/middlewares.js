@@ -3,7 +3,7 @@ import multerS3 from "multer-s3";
 import aws from "aws-sdk";
 import Video from "./models/Video";
 
-import { deleteVideo } from "../controllers/videoController";
+import { deleteVideo } from "./controllers/videoController";
 
 // middleware that saves info from backend to locals, accessible from any views
 const isHeroku = process.env.NODE_ENV === "production";

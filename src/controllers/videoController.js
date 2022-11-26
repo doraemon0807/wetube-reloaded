@@ -187,7 +187,6 @@ export const deleteVideo = async (req, res) => {
   user.videos.splice(user.videos.indexOf(id), 1);
   user.save();
 
-  req.flash("success", "Video deleted.");
   return res.redirect("/");
 };
 
