@@ -98,9 +98,7 @@ export const deleteAvatarFromDb = async (req, res, next) => {
     user: { _id }, // <= id of current user
   } = req.session;
   const user = await User.findById(_id);
-  if (!user.avatarUrl.includes(".com")) {
-    deleteFromDb(_id, user, "images");
-  }
+  deleteFromDb(_id, user, "images");
   next();
 };
 
