@@ -73,9 +73,7 @@ export const checkVideoExists = async (req, res, next) => {
       if (err) console.log(err);
       else console.log(data + "deleted");
     });
-    console.log("Deleted from AWS");
-    deleteVideo();
-    console.log("Deleted from Mongo");
+    console.log("Thumbnail deleted from AWS");
     return res.status(404).render("404", {
       pageTitle: "Video Not Found",
     });
