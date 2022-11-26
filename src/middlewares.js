@@ -53,6 +53,7 @@ export const checkVideoExists = async (req, res, next) => {
 
   const video = await Video.findById(id);
 
+  console.log(video.fileUrl);
   try {
     await s3
       .headObject({
