@@ -98,6 +98,7 @@ export const deleteAvatarFromDb = async (req, res, next) => {
     user: { _id }, // <= id of current user
   } = req.session;
   const user = await User.findById(_id);
+  console.log(user);
   deleteFromDb(_id, user, "images");
   next();
 };
@@ -123,12 +124,12 @@ const deleteFromDb = async (id, object, type) => {
         try {
           const videoParams = {
             Bucket: "wetube-reloaded-2022",
-            Key: `${type}/${object.thumbUrl.split("/")[4]}`,
+            Key: `${type}/${object.fileUrl.split("/")[4]}`,
           };
 
           s3.deleteObject(videoParams, (err, data) => {
             if (err) console.log(err);
-            else console.log("thumbnail deleted");
+            else console.log("video deleted");
           });
         } catch (error) {
           console.log(error);
