@@ -64,7 +64,7 @@
     flex-direction: column;
 
     .video__info__owner {
-      margin-bottom: 40px;
+      margin-bottom: 30px;
 
       .video__info__owner__name {
         font-size: 18px;
@@ -76,7 +76,23 @@
     }
 
     .video__description {
+      margin-bottom: 40px;
+    }
+
+    .video__hashtags {
+      display: flex;
       margin-bottom: 20px;
+
+      .video__hashtag {
+        display: flex;
+        margin-right: 10px;
+        background-color: $gray-lighter;
+        border: 1px solid $gray-light;
+        padding: 8px;
+        border-radius: 10px;
+        text-decoration: underline;
+        color: $blue-dark;
+      }
     }
   }
 }

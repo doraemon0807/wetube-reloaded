@@ -1,7 +1,6 @@
 # Wetube Reloaded
 
 to do:
-show hashtags in watch page
-click hashtag to search
+show comments by recent/popular
 
 video: show more?

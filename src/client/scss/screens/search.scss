@@ -15,6 +15,15 @@
       }
     }
 
+    select {
+      border: 1px solid $gray-dark;
+      border-radius: 3px;
+      padding: 0 5px;
+      &:focus:active {
+        border: 1px solid $blue-dark;
+      }
+    }
+
     button {
       all: unset;
       background-color: $gray-lighter;
@@ -33,7 +42,35 @@
   }
 }
 
-.search__result {
+.search__result__filter {
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+
+  * {
+    margin-right: 10px;
+  }
+
+  a {
+    display: flex;
+    margin-right: 10px;
+    background-color: $gray-lighter;
+    border: 1px solid $gray-light;
+    padding: 8px;
+    border-radius: 10px;
+    color: rgba(70, 70, 70, 1);
+    &:hover {
+      background-color: $gray-light;
+    }
+  }
+
+  .filter--selected {
+    background-color: $gray-darkest;
+    color: white;
+  }
+}
+
+.search__result__span {
   display: flex;
   font-size: 22px;
   margin-bottom: 40px;

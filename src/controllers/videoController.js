@@ -182,15 +182,51 @@ export const deleteVideo = async (req, res) => {
 export const search = async (req, res) => {
   let videos = [];
   let searched = false;
-  const { keyword } = req.query;
+  const { keyword, type, sort } = req.query;
+  let sorting;
+
+  switch (sort) {
+    case "title":
+      sorting = { title: 1 };
+      break;
+    case "createdAt":
+      sorting = { createdAt: -1 };
+      break;
+    case "views":
+      sorting = { "meta.views": -1 };
+      break;
+    case "like":
+      sorting = { "meta.like": -1 };
+      break;
+    default:
+      break;
+  }
+
   if (keyword) {
-    videos = await Video.find({
-      title: {
-        $regex: new RegExp(keyword, "i"), // <- contains (both lower and capital case)
-        // $regex: new RegExp(`^${keyword}`, "i"), <- starts with
-        // $regex: new RegExp(`${keyword}$`, "i"), <- ends with
-      },
-    }).populate("owner");
+    switch (type) {
+      case "Title":
+        videos = await Video.find({
+          title: {
+            $regex: new RegExp(keyword, "i"), // <- contains (both lower and capital case)
+            // $regex: new RegExp(`^${keyword}`, "i"), <- starts with
+            // $regex: new RegExp(`${keyword}$`, "i"), <- ends with
+          },
+        })
+          .sort(sorting)
+          .populate("owner");
+        break;
+      case "Hashtag":
+        videos = await Video.find({
+          hashtags: {
+            $regex: new RegExp(keyword, "i"), // <- contains (both lower and capital case)
+            // $regex: new RegExp(`^${keyword}`, "i"), <- starts with
+            // $regex: new RegExp(`${keyword}$`, "i"), <- ends with
+          },
+        })
+          .sort(sorting)
+          .populate("owner");
+        break;
+    }
     searched = true;
   }
   return res.render("videos/search", {
@@ -198,6 +234,8 @@ export const search = async (req, res) => {
     videos,
     keyword,
     searched,
+    type,
+    sort,
   });
 };
 

@@ -80,6 +80,10 @@ block content
                     span.subsCountUnit=`${video.owner.subs == 1 ? " Subscriber": " Subscribers" }`
             div.video__description
                 span=video.description
+            div.video__hashtags
+                each hashtag in video.hashtags
+                    a(href=`/search?type=Hashtag&keyword=${hashtag.substring(1)}`)
+                        span.video__hashtag=hashtag
 
 
     div.video__commentCount

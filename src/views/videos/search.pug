@@ -4,11 +4,41 @@ include ../mixins/video
 block content 
     div.search__container
         form(method="GET").search__form
-            input(name="keyword", placeholder="Search by title", value=keyword, type="text")
+            select(name="type")
+                if type==="Hashtag"
+                    option(name="title") Title
+                    option(name="hashtag" selected) Hashtag
+                else
+                    option(name="title") Title
+                    option(name="hashtag") Hashtag
+            input(name="keyword", placeholder="Search by keyword", value=keyword, type="text")
             button
                 i.fas.fa-search
     if searched
-        span.search__result Searched with "#{keyword}" : #{videos.length} #{videos.length===1? "video":"videos"} found.
+        span.search__result__span Searched with "#{keyword}" in #{type} : #{videos.length} #{videos.length===1? "video":"videos"} found.
+        div.search__result__filter
+            span Sort by
+            if sort === "title"
+                a(href=`/search?type=${type}&keyword=${keyword}&sort=title`).filter--selected Title
+            else
+                a(href=`/search?type=${type}&keyword=${keyword}&sort=title`) Title
+
+            if sort === "createdAt"
+                a(href=`/search?type=${type}&keyword=${keyword}&sort=createdAt`).filter--selected Most Recent
+            else
+                a(href=`/search?type=${type}&keyword=${keyword}&sort=createdAt`) Most Recent
+
+            if sort === "views"
+                a(href=`/search?type=${type}&keyword=${keyword}&sort=views`).filter--selected Most Views
+            else 
+                a(href=`/search?type=${type}&keyword=${keyword}&sort=views`) Most Views
+
+            if sort === "like"
+                a(href=`/search?type=${type}&keyword=${keyword}&sort=like`).filter--selected Most Likes
+            else 
+                a(href=`/search?type=${type}&keyword=${keyword}&sort=like`) Most Likes
+
+            
         div.video-grid
-            each video in videos 
+            each video in videos
                 +video(video)
