@@ -11,5 +11,8 @@ block content
         else if pageTitle=="User Not Found"
             i.error__icon.fas.fa-user-slash 
             p.error__description The user cannot be found.
+        else 
+            i.error__icon.fas.fa-exclamation-circle
+            p.error__description You cannot access this page.
         a.error__link.linkFont(href="/")
             span GO TO HOME

@@ -11,6 +11,7 @@ export const home = async (req, res) => {
 
 export const watch = async (req, res) => {
   const { id } = req.params; // <- id of video
+  const { sort } = req.query;
 
   const video = await Video.findById(id)
     .populate("owner")
@@ -19,11 +20,31 @@ export const watch = async (req, res) => {
       populate: { path: "owner" },
     });
 
-  if (!video) {
+  if (!video || (!req.session.loggedIn && sort === "mine")) {
     return res.status(404).render("404", {
-      pageTitle: "Video Not Found",
+      pageTitle: "Unauthorized",
     });
-  } else if (req.session.loggedIn) {
+  }
+
+  let index = [];
+  let comments = [];
+
+  video.comments.forEach((comment) => {
+    comments.push(comment);
+  });
+
+  switch (sort) {
+    case "createdAt":
+      comments.sort((a, b) => b.createdAt - a.createdAt);
+      break;
+    case "like":
+      comments.sort((a, b) => b.like - a.like);
+      break;
+    default:
+      break;
+  }
+
+  if (req.session.loggedIn) {
     const {
       user: { _id }, // <= id of current user
     } = req.session;
@@ -32,6 +53,17 @@ export const watch = async (req, res) => {
       .populate("subbedUsers")
       .populate("likedVideos")
       .populate("likedComments");
+
+    if (sort === "mine") {
+      for (const comment of comments) {
+        if (comment.owner._id.toString() !== _id) {
+          index.push(comments.indexOf(comment));
+        }
+      }
+      index.reverse().forEach((idx) => {
+        comments.splice(idx, 1);
+      });
+    }
 
     return res.render("videos/watch", {
       pageTitle: video.title,
@@ -43,11 +75,15 @@ export const watch = async (req, res) => {
         (likedVideo) => likedVideo._id.toString() === video._id.toString()
       ),
       currentUser,
+      comments,
+      sort,
     });
   }
   return res.render("videos/watch", {
     pageTitle: video.title,
     video,
+    comments,
+    sort,
   });
 };
 

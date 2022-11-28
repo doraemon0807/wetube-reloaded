@@ -97,10 +97,27 @@ block content
             form.video__comment-form#commentForm
                 textarea#commentTextArea(cols="30", rows="10", placeholder="Write a nice comment...")
                 button COMMENT
+    if video.comments.length != 0
+        div.video__comment__filters.filter
+            span Sort by
+            if sort === "createdAt"
+                a(href=`${video._id}?sort=createdAt`).filter--selected Most Recent
+            else
+                a(href=`${video._id}?sort=createdAt`) Most Recent
+            if sort === "like"
+                a(href=`${video._id}?sort=like`).filter--selected Most Likes
+            else 
+                a(href=`${video._id}?sort=like`) Most Likes
+            if loggedIn
+                if sort === "mine"
+                    a(href=`${video._id}?sort=mine`).filter--selected My Comments
+                else 
+                    a(href=`${video._id}?sort=mine`) My Comments
+
 
     div.video__comments
         ul 
-            each comment in video.comments
+            each comment in comments
                 li.video__comment(data-id=comment.id)
                     div.video__comment__container
                         div.video__comment__avatar

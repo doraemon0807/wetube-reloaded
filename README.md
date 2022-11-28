@@ -1,6 +1,6 @@
 # Wetube Reloaded
 
 to do:
-show comments by recent/popular
+use Nico's video to update "created at"?
 
 video: show more?

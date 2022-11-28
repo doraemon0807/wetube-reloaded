@@ -18,7 +18,7 @@ block content
         span.search__result__span Searched with "#{keyword}" in #{type} : #{videos.length} #{videos.length===1? "video":"videos"} found.
         
         if videos.length != 0
-            div.search__result__filter
+            div.search__result__filter.filter
                 span Sort by
                 if sort === "title"
                     a(href=`/search?type=${type}&keyword=${keyword}&sort=title`).filter--selected Title
