@@ -16,27 +16,29 @@ block content
                 i.fas.fa-search
     if searched
         span.search__result__span Searched with "#{keyword}" in #{type} : #{videos.length} #{videos.length===1? "video":"videos"} found.
-        div.search__result__filter
-            span Sort by
-            if sort === "title"
-                a(href=`/search?type=${type}&keyword=${keyword}&sort=title`).filter--selected Title
-            else
-                a(href=`/search?type=${type}&keyword=${keyword}&sort=title`) Title
+        
+        if videos.length != 0
+            div.search__result__filter
+                span Sort by
+                if sort === "title"
+                    a(href=`/search?type=${type}&keyword=${keyword}&sort=title`).filter--selected Title
+                else
+                    a(href=`/search?type=${type}&keyword=${keyword}&sort=title`) Title
 
-            if sort === "createdAt"
-                a(href=`/search?type=${type}&keyword=${keyword}&sort=createdAt`).filter--selected Most Recent
-            else
-                a(href=`/search?type=${type}&keyword=${keyword}&sort=createdAt`) Most Recent
+                if sort === "createdAt"
+                    a(href=`/search?type=${type}&keyword=${keyword}&sort=createdAt`).filter--selected Most Recent
+                else
+                    a(href=`/search?type=${type}&keyword=${keyword}&sort=createdAt`) Most Recent
 
-            if sort === "views"
-                a(href=`/search?type=${type}&keyword=${keyword}&sort=views`).filter--selected Most Views
-            else 
-                a(href=`/search?type=${type}&keyword=${keyword}&sort=views`) Most Views
+                if sort === "views"
+                    a(href=`/search?type=${type}&keyword=${keyword}&sort=views`).filter--selected Most Views
+                else 
+                    a(href=`/search?type=${type}&keyword=${keyword}&sort=views`) Most Views
 
-            if sort === "like"
-                a(href=`/search?type=${type}&keyword=${keyword}&sort=like`).filter--selected Most Likes
-            else 
-                a(href=`/search?type=${type}&keyword=${keyword}&sort=like`) Most Likes
+                if sort === "like"
+                    a(href=`/search?type=${type}&keyword=${keyword}&sort=like`).filter--selected Most Likes
+                else 
+                    a(href=`/search?type=${type}&keyword=${keyword}&sort=like`) Most Likes
 
             
         div.video-grid
