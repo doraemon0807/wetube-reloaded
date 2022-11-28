@@ -180,10 +180,10 @@
 }
 
 .fade-out {
-  animation: puff-out-center 0.8s ease-out both;
+  animation: puff-out-video-player 0.8s ease-out both;
 }
 
-@keyframes puff-out-center {
+@keyframes puff-out-video-player {
   0% {
     transform: scale(1) translate(-50%, -50%);
     opacity: 1;

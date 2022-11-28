@@ -35,7 +35,11 @@ block content
             - let cnt = 0;
             each comment in user.comments
                 div.profile__user-comments__container
-                    a.profile__user-comments__thumbnail(href=`/videos/${comment.video._id}` style=`background-image:url(/${comment.video.thumbUrl});background-size:cover;background-position:center`)
+                    a(href=`/videos/${video._id}`)
+                        if isHeroku
+                            img.profile__user-comments__thumbnail(src=`/videos/${comment.video._id}` crossorigin)
+                        else
+                            img.profile__user-comments__thumbnail(src="/" + `/videos/${comment.video._id}` crossorigin)
                     div.profile__user-comments__info
                         div.profile__user-comments__info__title.titleFont=comment.video.title
                         div.profile__user-comments__info__createdAt
