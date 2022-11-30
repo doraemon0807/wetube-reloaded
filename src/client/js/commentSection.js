@@ -1,4 +1,4 @@
-import { isHeroku } from "./main.js";
+import { isHeroku, addAlertBox, deleteAlertBox } from "./main";
 
 const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
@@ -47,7 +47,7 @@ const addComment = (comment) => {
 
   deleteBtn.appendChild(deleteIcon);
   deleteBtn.addEventListener("click", () => {
-    addCommentAlertBox(deleteBtn, "deleteComment");
+    addAlertBox(deleteBtn, "deleteComment");
   });
 
   const editBtn = document.createElement("button");
@@ -172,7 +172,7 @@ const handleDelete = async (event) => {
   if (response.status === 200) {
     const alertBox = document.querySelector(".alertContainer");
     alertBox.remove();
-    document.body.removeEventListener("click", deleteCommentAlertBox);
+    document.body.removeEventListener("click", deleteAlertBox);
 
     li.style.transform = "translateX(2000px)";
     setTimeout(() => {
@@ -338,7 +338,7 @@ const handleCommentLike = async (event) => {
     likeCommentBtn.removeEventListener("click", handleCommentLike);
     likeCommentBtn.addEventListener("click", handleCommentUnlike);
   } else if (response.status === 400) {
-    addCommentAlertBox(likeCommentBtn, "comment");
+    addAlertBox(likeCommentBtn, "comment");
   }
 };
 
@@ -370,66 +370,66 @@ const handleCommentUnlike = async (event) => {
   }
 };
 
-const addCommentAlertBox = (btn, object) => {
-  let title = "";
-  let desc = "";
-  let text = "";
-  let link = "";
+// const addCommentAlertBox = (btn, object) => {
+//   let title = "";
+//   let desc = "";
+//   let text = "";
+//   let link = "";
 
-  const alertContainer = document.createElement("div");
-  const alert__title = document.createElement("h3");
-  const alert__description = document.createElement("span");
-  const alert__link = document.createElement("a");
-  const alert__link__span = document.createElement("span");
+//   const alertContainer = document.createElement("div");
+//   const alert__title = document.createElement("h3");
+//   const alert__description = document.createElement("span");
+//   const alert__link = document.createElement("a");
+//   const alert__link__span = document.createElement("span");
 
-  switch (object) {
-    case "comment":
-      title = "Like this comment?";
-      desc = "Log in to make your opinion count.";
-      text = "Log in";
-      link = "/login";
-      break;
-    case "deleteComment":
-      title = "Are you sure you want to delete?";
-      desc = "Deleted comments cannot be restored.";
-      text = "Delete";
-      alert__link.addEventListener("click", handleDelete);
-      break;
-  }
+//   switch (object) {
+//     case "comment":
+//       title = "Like this comment?";
+//       desc = "Log in to make your opinion count.";
+//       text = "Log in";
+//       link = "/login";
+//       break;
+//     case "deleteComment":
+//       title = "Are you sure you want to delete?";
+//       desc = "Deleted comments cannot be restored.";
+//       text = "Delete";
+//       alert__link.addEventListener("click", handleDelete);
+//       break;
+//   }
 
-  alertContainer.classList = "alertContainer";
+//   alertContainer.classList = "alertContainer";
 
-  alert__title.classList = "alert__title titleFont";
-  alert__title.innerText = title;
-  alert__description.classList = "alert__description grayFont";
-  alert__description.innerText = desc;
-  alert__link.classList = "alert__link linkFont";
-  alert__link.href = link;
-  alert__link__span.innerText = text;
+//   alert__title.classList = "alert__title titleFont";
+//   alert__title.innerText = title;
+//   alert__description.classList = "alert__description grayFont";
+//   alert__description.innerText = desc;
+//   alert__link.classList = "alert__link linkFont";
+//   alert__link.href = link;
+//   alert__link__span.innerText = text;
 
-  alert__link.appendChild(alert__link__span);
+//   alert__link.appendChild(alert__link__span);
 
-  alertContainer.appendChild(alert__title);
-  alertContainer.appendChild(alert__description);
-  alertContainer.appendChild(alert__link);
-  btn.parentElement.appendChild(alertContainer);
+//   alertContainer.appendChild(alert__title);
+//   alertContainer.appendChild(alert__description);
+//   alertContainer.appendChild(alert__link);
+//   btn.parentElement.appendChild(alertContainer);
 
-  setTimeout(
-    () => document.body.addEventListener("click", deleteCommentAlertBox),
-    0
-  );
-};
+//   setTimeout(
+//     () => document.body.addEventListener("click", deleteCommentAlertBox),
+//     0
+//   );
+// };
 
-const deleteCommentAlertBox = (event) => {
-  const alertBox = document.querySelector(".alertContainer");
+// const deleteCommentAlertBox = (event) => {
+//   const alertBox = document.querySelector(".alertContainer");
 
-  if (event.target === alertBox || alertBox.contains(event.target)) {
-    return;
-  } else {
-    alertBox.remove();
-    document.body.removeEventListener("click", deleteCommentAlertBox);
-  }
-};
+//   if (event.target === alertBox || alertBox.contains(event.target)) {
+//     return;
+//   } else {
+//     alertBox.remove();
+//     document.body.removeEventListener("click", deleteCommentAlertBox);
+//   }
+// };
 
 const btnAddEventListener = () => {
   if (form) {
@@ -442,7 +442,10 @@ const btnAddEventListener = () => {
   if (deleteBtns) {
     deleteBtns.forEach((deleteBtn) => {
       deleteBtn.addEventListener("click", () => {
-        addCommentAlertBox(deleteBtn, "deleteComment");
+        addAlertBox(deleteBtn, "deleteComment");
+        document
+          .querySelector(".alert__link")
+          .addEventListener("click", handleDelete);
       });
     });
   }

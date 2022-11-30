@@ -7,44 +7,26 @@ mixin createdAgo(createdAt)
                 case (diff <= 1): 
                     timeAgo = "Just Now";
                     break;
-                case (diff < 59): 
-                    timeAgo = diff + " seconds ago";
+                case (diff < 59):
+                    timeAgo = new Intl.RelativeTimeFormat('en-US').format(-diff, 'second')
                     break;
-                case (diff <= 120): 
-                    timeAgo = "one minute ago";
+                case (diff <= 3540):
+                    timeAgo = new Intl.RelativeTimeFormat('en-US').format(-Math.round(diff / 60), 'minute')
                     break;
-                case (diff <= 3540): 
-                    timeAgo = Math.round(diff / 60) + " minutes ago";
+                case (diff <= 82800):
+                    timeAgo = new Intl.RelativeTimeFormat('en-US').format(-Math.round(diff / 3600), 'hour')
                     break;
-                case (diff <= 7140): 
-                    timeAgo = "1 hour ago";
+                case (diff <= 518400):
+                    timeAgo = new Intl.RelativeTimeFormat('en-US').format(-Math.round(diff / 86400), 'day')
                     break;
-                case (diff <= 82800): 
-                    timeAgo = Math.round(diff / 3600) + " hours ago";
+                case (diff <= 1814400):
+                    timeAgo = new Intl.RelativeTimeFormat('en-US').format(-Math.round(diff/ 604800), 'week')
                     break;
-                case (diff <= 172800): 
-                    timeAgo = "1 day ago";
+                case (diff <= 26611200):
+                    timeAgo = new Intl.RelativeTimeFormat('en-US').format(-Math.round(diff/ 2419200), 'month')
                     break;
-                case (diff <= 518400): 
-                    timeAgo = Math.round(diff / 86400) + " days ago";
-                    break;
-                case (diff <= 1209600) : 
-                    timeAgo = "1 week ago";
-                    break;
-                case (diff <= 1814400) :
-                    timeAgo = Math.round(diff/ 604800) + " weeks ago";
-                    break;
-                case (diff <= 5259600) :
-                    timeAgo = "1 month ago";
-                    break;
-                case (diff <= 28927800) :
-                    timeAgo = Math.round(diff/ 2629800) + " months ago";
-                    break;
-                case (diff <= 63115200) :
-                    timeAgo = "1 year ago";
-                    break;
-                case (diff > 63115200) :
-                    timeAgo = Math.round(diff/ 31557600) + " years ago";
+                case (diff > 26611200):
+                    timeAgo = new Intl.RelativeTimeFormat('en-US').format(-Math.round(diff/ 29030400), 'year')
                     break;
                 default: 
                      timeAgo = "on " + createdAt.toLocaleDateString("Canada",{year: "numeric", month:"short", day:"numeric"})

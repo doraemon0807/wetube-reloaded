@@ -7,7 +7,7 @@ header
     nav 
         ul 
             li 
-                a(href="/search")
+                a(href="/search", tooltip="Search").tooltip
                     i.fas.fa-search
             if loggedIn 
                 li 
@@ -19,9 +19,7 @@ header
                         +avatar(loggedInUser, "medium")
             else
                 li 
-                    a(href="/login") Login
-                li 
-                    a(href="/join").header__btn__join.linkFont
+                    a(href="/login").header__btn__join.linkFont
                         div.header__btn__join__border
                             i.far.fa-user
                         span Sign In

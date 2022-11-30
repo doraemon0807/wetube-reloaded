@@ -13,7 +13,8 @@ block content
                     option(name="hashtag") Hashtag
             input(name="keyword", placeholder="Search by keyword", value=keyword, type="text")
             button
-                i.fas.fa-search
+                div(tooltip="Search").search__button__area.tooltip
+                    i.fas.fa-search
     if searched
         span.search__result__span Searched with "#{keyword}" in #{type} : #{videos.length} #{videos.length===1? "video":"videos"} found.
         

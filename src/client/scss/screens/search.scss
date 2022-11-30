@@ -19,6 +19,7 @@
       border: 1px solid $gray-dark;
       border-radius: 3px;
       padding: 0 5px;
+      cursor: pointer;
       &:focus:active {
         border: 1px solid $blue-dark;
       }
@@ -34,6 +35,22 @@
       cursor: pointer;
       border-radius: 0 5px 5px 0;
       transition: background-color ease-in-out 0.1s;
+      position: relative;
+
+      .search__button__area {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+
+        i {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
 
       &:hover {
         background-color: $gray-light;

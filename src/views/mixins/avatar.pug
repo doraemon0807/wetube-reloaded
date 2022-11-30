@@ -6,7 +6,7 @@ mixin avatar(user, size)
             when "big"
                 if !user.avatarUrl
                     div.avatar.avatar--big.avatar--missing
-                        span=user.username.slice(1,2).toUpperCase()
+                        span=user.username.slice(0,1).toUpperCase()
                 else if isHeroku || user.avatarUrl.includes(".com")
                     img(src=user.avatarUrl crossorigin="anonymous").avatar.avatar--big
                 else
@@ -14,7 +14,7 @@ mixin avatar(user, size)
             when "medium"
                 if !user.avatarUrl
                     div.avatar.avatar--medium.avatar--missing
-                        span=user.username.slice(1,2).toUpperCase()
+                        span=user.username.slice(0,1).toUpperCase()
                 else if isHeroku || user.avatarUrl.includes(".com")
                     img(src=user.avatarUrl crossorigin="anonymous").avatar.avatar--medium
                 else
@@ -22,7 +22,7 @@ mixin avatar(user, size)
             when "small"
                 if !user.avatarUrl
                     div.avatar.avatar--small.avatar--missing
-                        span=user.username.slice(1,2).toUpperCase()
+                        span=user.username.slice(0,1).toUpperCase()
                 else if isHeroku || user.avatarUrl.includes(".com")
                     img(src=user.avatarUrl crossorigin="anonymous").avatar.avatar--small
                 else

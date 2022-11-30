@@ -11,7 +11,7 @@ block content
                 div.profile__date__info__username
                     span=user.name
                     if loggedIn && String(user.id) === String(loggedInUser._id)
-                        a.profile__info__edit(href="/users/edit")
+                        a.profile__info__edit(href="/users/edit", tooltip="Edit Profile").tooltip
                             i.fas.fa-pen
                 div.profile__data__subs
                     span.subsCount=`${user.subs}`
