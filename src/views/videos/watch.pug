@@ -42,22 +42,20 @@ block content
                 small.video__createdAt=new Date(video.createdAt).toLocaleDateString("Canada")
         div.video__btns
             if likedVideoFind
-                button.video__btns__like.likeVideoBtn.liked.likeButton
+                button.video__btns__like.likeVideoBtn.liked.likeButton.tooltip(tooltip="Liked!")
                     i.fas.fa-heart.likeVideoIcon
                     span.likeVideoCount=video.meta.like
             else 
-                button.video__btns__like.likeVideoBtn.likeButton
+                button.video__btns__like.likeVideoBtn.likeButton.tooltip(tooltip="Like!")
                     i.fas.fa-heart.likeVideoIcon
                     span.likeVideoCount=video.meta.like
             
             if String(video.owner.id) === String(loggedInUser._id)
 
-                a.video__btns__edit(href=`${video.id}/edit`)
+                a.video__btns__edit.tooltip(href=`${video.id}/edit`, tooltip="Edit")
                     i.fas.fa-pen
-                    span EDIT
-                button.video__btns__delete
+                button.video__btns__delete.tooltip(tooltip="Delete")
                     i.fas.fa-trash-alt
-                    span DELETE
 
 
             if String(video.owner.id) !== String(loggedInUser._id)
@@ -132,17 +130,17 @@ block content
                                 
                         div.video__comment__buttons
                             if loggedIn && currentUser.likedComments.find((likedComment) => likedComment._id.toString() === comment.id)
-                                button.video__comment__buttons__like.liked.likeButton
+                                button.video__comment__buttons__like.liked.likeButton.tooltip(tooltip="Liked!")
                                     i.fas.fa-heart.likeCommentIcon
                                     span.likeCommentCount=comment.like
                             else
-                                button.video__comment__buttons__like.likeButton
+                                button.video__comment__buttons__like.likeButton.tooltip(tooltip="Like!")
                                     i.fas.fa-heart.likeCommentIcon
                                     span.likeCommentCount=comment.like
                             if String(comment.owner._id) === String(loggedInUser._id)
-                                button.video__comment__buttons__edit
+                                button.video__comment__buttons__edit.tooltip(tooltip="Edit")
                                     i.fas.fa-pen
-                                button.video__comment__buttons__delete 
+                                button.video__comment__buttons__delete.tooltip(tooltip="Delete")
                                     i.fas.fa-trash-alt
 
                     

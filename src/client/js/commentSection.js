@@ -30,7 +30,8 @@ const addComment = (comment) => {
   const likeIcon = document.createElement("i");
   const likeSpan = document.createElement("span");
 
-  likeBtn.className = "video__comment__buttons__like likeButton";
+  likeBtn.className = "video__comment__buttons__like likeButton tooltip";
+  likeBtn.setAttribute("tooltip", "Like!");
   likeIcon.className = "fas fa-heart likeCommentIcon";
   likeSpan.className = "likeCommentCount";
   likeSpan.innerText = "0";
@@ -42,7 +43,8 @@ const addComment = (comment) => {
   const deleteBtn = document.createElement("button");
   const deleteIcon = document.createElement("i");
 
-  deleteBtn.className = "video__comment__buttons__delete";
+  deleteBtn.className = "video__comment__buttons__delete tooltip";
+  deleteBtn.setAttribute("tooltip", "Delete");
   deleteIcon.className = "fas fa-trash-alt";
 
   deleteBtn.appendChild(deleteIcon);
@@ -53,7 +55,8 @@ const addComment = (comment) => {
   const editBtn = document.createElement("button");
   const editIcon = document.createElement("i");
 
-  editBtn.className = "video__comment__buttons__edit";
+  editBtn.className = "video__comment__buttons__edit tooltip";
+  editBtn.setAttribute("tooltip", "Edit");
   editIcon.className = "fas fa-pen";
   editBtn.appendChild(editIcon);
   editBtn.addEventListener("click", handleEdit);
@@ -212,9 +215,11 @@ const handleEdit = (event) => {
   commentEditContainerFormButtonIcon2.className = "fas fa-times";
 
   commentEditContainerFormButton1.className =
-    "video__comment__edit__buttons__submit";
+    "video__comment__edit__buttons__submit tooltip";
   commentEditContainerFormButton2.className =
-    "video__comment__edit__buttons__cancel";
+    "video__comment__edit__buttons__cancel tooltip";
+  commentEditContainerFormButton1.setAttribute("tooltip", "Submit");
+  commentEditContainerFormButton2.setAttribute("tooltip", "Cancel");
 
   commentEditContainerFormTextArea.value = commentText;
   commentEditContainerFormTextArea.id = "editTextArea";
@@ -334,6 +339,7 @@ const handleCommentLike = async (event) => {
 
   if (response.status === 200) {
     likeCommentBtn.classList.add("liked");
+    likeCommentBtn.setAttribute("tooltip", "Liked!");
     likeCommentCount.innerText = parseInt(likeCommentCount.innerText) + 1;
     likeCommentBtn.removeEventListener("click", handleCommentLike);
     likeCommentBtn.addEventListener("click", handleCommentUnlike);
@@ -364,72 +370,12 @@ const handleCommentUnlike = async (event) => {
 
   if (response.status === 200) {
     likeCommentBtn.classList.remove("liked");
+    likeCommentBtn.setAttribute("tooltip", "Like!");
     likeCommentCount.innerText = parseInt(likeCommentCount.innerText) - 1;
     likeCommentBtn.removeEventListener("click", handleCommentUnlike);
     likeCommentBtn.addEventListener("click", handleCommentLike);
   }
 };
-
-// const addCommentAlertBox = (btn, object) => {
-//   let title = "";
-//   let desc = "";
-//   let text = "";
-//   let link = "";
-
-//   const alertContainer = document.createElement("div");
-//   const alert__title = document.createElement("h3");
-//   const alert__description = document.createElement("span");
-//   const alert__link = document.createElement("a");
-//   const alert__link__span = document.createElement("span");
-
-//   switch (object) {
-//     case "comment":
-//       title = "Like this comment?";
-//       desc = "Log in to make your opinion count.";
-//       text = "Log in";
-//       link = "/login";
-//       break;
-//     case "deleteComment":
-//       title = "Are you sure you want to delete?";
-//       desc = "Deleted comments cannot be restored.";
-//       text = "Delete";
-//       alert__link.addEventListener("click", handleDelete);
-//       break;
-//   }
-
-//   alertContainer.classList = "alertContainer";
-
-//   alert__title.classList = "alert__title titleFont";
-//   alert__title.innerText = title;
-//   alert__description.classList = "alert__description grayFont";
-//   alert__description.innerText = desc;
-//   alert__link.classList = "alert__link linkFont";
-//   alert__link.href = link;
-//   alert__link__span.innerText = text;
-
-//   alert__link.appendChild(alert__link__span);
-
-//   alertContainer.appendChild(alert__title);
-//   alertContainer.appendChild(alert__description);
-//   alertContainer.appendChild(alert__link);
-//   btn.parentElement.appendChild(alertContainer);
-
-//   setTimeout(
-//     () => document.body.addEventListener("click", deleteCommentAlertBox),
-//     0
-//   );
-// };
-
-// const deleteCommentAlertBox = (event) => {
-//   const alertBox = document.querySelector(".alertContainer");
-
-//   if (event.target === alertBox || alertBox.contains(event.target)) {
-//     return;
-//   } else {
-//     alertBox.remove();
-//     document.body.removeEventListener("click", deleteCommentAlertBox);
-//   }
-// };
 
 const btnAddEventListener = () => {
   if (form) {

@@ -28,20 +28,25 @@
       margin-right: 15px;
     }
 
+    .video__btns__edit {
+      border-radius: 100px 0 0 100px;
+      height: 17px;
+    }
     .video__btns__delete {
-      margin-left: 10px;
+      border-radius: 0 100px 100px 0;
     }
 
     .video__btns__edit,
     .video__btns__delete {
       background-color: rgba(235, 235, 235, 1);
       padding: 10px 20px;
-      border-radius: 100px;
       border: 1px solid $gray-light;
       cursor: pointer;
       font-size: 15px;
-      i {
-        margin-right: 10px;
+      transition: background-color 0.1s ease-in-out;
+
+      &:hover {
+        background-color: $gray-dark;
       }
     }
   }
