@@ -16,6 +16,7 @@ export const localsMiddleware = (req, res, next) => {
   res.locals.loggedInUser = req.session.user || {};
   res.locals.subbed = Boolean(req.session.subbed);
   res.locals.isHeroku = isHeroku;
+  res.locals.url = req.url;
   next();
 };
 

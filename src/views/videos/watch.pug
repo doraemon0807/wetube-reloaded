@@ -15,11 +15,11 @@ block content
 
                 div.videoControls__buttons
                     div.videoControls__play
-                        span#play.videoControls__playBtn
+                        div#play.videoControls__playBtn.tooltip(tooltip="Play")
                             i.fas.fa-play
                     div.videoControls__volume-time
                         div.videoControls__volume
-                            span#mute
+                            div#mute.tooltip(tooltip="Mute")
                                 i.fas.fa-volume-up
                             input(type="range", step=0.1 value=0.5, min=0, max=1)#volume
                         div.videoControls__time 
@@ -28,7 +28,7 @@ block content
                             span#totalTime 00:00
                     div
                     div.videoControls__fullscreen
-                        span#fullscreen
+                        div#fullscreen.tooltip(tooltip="Fullscreen")
                             i.fas.fa-expand
 
             div#videoHud

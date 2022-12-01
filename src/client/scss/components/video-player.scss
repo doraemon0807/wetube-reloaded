@@ -92,7 +92,7 @@
         margin: 0px 15px;
       }
 
-      span {
+      #play {
         cursor: pointer;
       }
     }
@@ -120,7 +120,7 @@
           }
         }
 
-        span {
+        #mute {
           display: flex;
           width: 20px;
           margin: 0 10px;
@@ -145,7 +145,7 @@
       align-items: center;
       justify-content: flex-end;
 
-      span {
+      #fullscreen {
         cursor: pointer;
         i {
           font-size: 20px;

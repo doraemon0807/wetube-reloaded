@@ -47,6 +47,12 @@ export const addAlertBox = (btn, object) => {
       desc = "Deleted comments cannot be restored.";
       text = "Delete";
       break;
+    case "logout":
+      title = "Leaving Already?";
+      desc = "Are you sure you want to log out?";
+      text = "Log Out";
+      link = "/users/logout";
+      break;
   }
 
   alertContainer.classList = "alertContainer";

@@ -15,7 +15,7 @@ block content
                 button#actionBtn2.hidden-Retake Retake
         if errorMessage
             span=errorMessage
-        form(method="POST", enctype="multipart/form-data").upload__form
+        form(method="POST", enctype="multipart/form-data").upload__form.form
             label(for="video") Video File
             input(name="video", type="file", id="video", accept="video/*", required)
             label(for="thumb") Thumbnail File

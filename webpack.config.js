@@ -10,6 +10,7 @@ module.exports = {
     recorder: BASE_JS + "recorder.js",
     commentSection: BASE_JS + "commentSection.js",
     likeSubs: BASE_JS + "likeSubs.js",
+    header: BASE_JS + "header.js",
   }, // <- file you want to convert
   plugins: [
     new MiniCssExtractPlugin({

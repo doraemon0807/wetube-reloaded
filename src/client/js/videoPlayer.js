@@ -84,9 +84,11 @@ const handleVideoHudEnd = () => {
 const handlePlayClick = () => {
   if (video.paused) {
     video.play();
+    playBtn.setAttribute("tooltip", "Pause");
     handleVideoHudPlay();
   } else {
     video.pause();
+    playBtn.setAttribute("tooltip", "Play");
     handleVideoHudPlay();
   }
   playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
@@ -102,10 +104,12 @@ const handleMute = () => {
 
     volumeRange.value = volumeValue;
     handleVolumeIcon(volumeValue);
+    muteBtn.setAttribute("tooltip", "Mute");
   } else {
     video.muted = true;
     muteBtnIcon.classList = "fas fa-volume-mute";
     volumeRange.value = 0;
+    muteBtn.setAttribute("tooltip", "Unmute");
   }
   handleVideoHudMute();
 };
@@ -135,8 +139,10 @@ const handleVolumeInput = (event) => {
 
   if (value == 0) {
     video.muted = true;
+    muteBtn.setAttribute("tooltip", "Unmute");
   } else {
     video.muted = false;
+    muteBtn.setAttribute("tooltip", "Mute");
   }
 
   handleVolumeIcon(video.volume);
@@ -207,8 +213,22 @@ const handleFullScreenBtn = () => {
   const fullscreen = document.fullscreenElement;
   if (fullscreen) {
     fullScreenBtnIcon.classList = "fas fa-compress";
+    fullScreenBtn.setAttribute("tooltip", "Exit Fullscreen");
+    playBtn.classList.remove("tooltip");
+    muteBtn.classList.remove("tooltip");
+    fullScreenBtn.classList.remove("tooltip");
+    playBtn.classList.add("tooltip-top");
+    muteBtn.classList.add("tooltip-top");
+    fullScreenBtn.classList.add("tooltip-top");
   } else {
     fullScreenBtnIcon.classList = "fas fa-expand";
+    fullScreenBtn.setAttribute("tooltip", "Fullscreen");
+    playBtn.classList.remove("tooltip-top");
+    muteBtn.classList.remove("tooltip-top");
+    fullScreenBtn.classList.remove("tooltip-top");
+    playBtn.classList.add("tooltip");
+    muteBtn.classList.add("tooltip");
+    fullScreenBtn.classList.add("tooltip");
   }
 };
 

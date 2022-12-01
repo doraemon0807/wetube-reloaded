@@ -4,19 +4,37 @@ header
     a(href="/").header__logo
         i.fab.fa-youtube
         span WeTube
-    nav 
-        ul 
-            li 
-                a(href="/search", tooltip="Search").tooltip
+    unless url.includes("join") || url.includes("login")|| url.includes("users")|| url.includes("edit")|| url.includes("upload")
+        form(method="GET", action="/search").header__search__form
+            select(name="type")
+                if type==="Hashtag"
+                    option(name="title") Title
+                    option(name="hashtag" selected) Hashtag
+                else
+                    option(name="title") Title
+                    option(name="hashtag") Hashtag
+            input(name="keyword", placeholder="Search by keyword", value=keyword, type="text")
+            button
+                div(tooltip="Search").search__button__area.tooltip
                     i.fas.fa-search
+
+    nav 
+        ul
             if loggedIn 
-                li 
-                    a(href="/users/logout") Log Out
-                li 
-                    a(href="/videos/upload") Upload Video
-                li 
-                    a(href=`/users/${loggedInUser._id}`)
-                        +avatar(loggedInUser, "medium")
+                li.header__hamburger
+                    div.header__hamburger__icon.tooltip(tooltip="Menu")
+                        div
+                        div
+                        div
+                    div.header__hamburger__menu.hamburger__hidden
+                        a(href="/videos/upload") Upload Video
+                        a(href="/users/edit") Edit Profile
+                        //- a(href="/users/logout") Log Out
+                        button#logout Log Out
+                    
+                li.header__avatar.tooltip(tooltip="My Profile")
+                    +avatar(loggedInUser, "medium")
+
             else
                 li 
                     a(href="/login").header__btn__join.linkFont

@@ -1,4 +1,4 @@
-import { addAlertBox, deleteAlertBox } from "./main";
+import { addAlertBox } from "./main";
 
 const videoContainer = document.getElementById("videoContainer");
 const videoOwnerData = document.getElementById("videoOwnerData");
