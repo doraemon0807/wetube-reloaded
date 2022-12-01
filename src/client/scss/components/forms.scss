@@ -13,7 +13,7 @@
     font-size: 16px;
     color: $gray-darkest;
     width: 90%;
-    background-color: white;
+    background-color: $white;
     border-radius: 3px;
     &::placeholder {
       color: $gray-darker;
@@ -35,13 +35,13 @@
   border-radius: 5px;
   padding: 12px 20px;
   background-color: rgba($color: $black, $alpha: 0.8);
-  color: white;
+  color: $white;
   text-shadow: 1px 1px $black;
   text-align: center;
   cursor: pointer;
   display: block;
   margin-top: 5px;
-  border: 1px solid white;
+  border: 1px solid $white;
 
   &:hover {
     border: 1px solid rgba($color: $blue-dark, $alpha: 0.4);

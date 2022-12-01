@@ -28,13 +28,13 @@
       }
       &:focus + button {
         display: flex;
-        color: white;
+        color: $white;
       }
 
       &:not(:placeholder-shown) + button {
         display: flex;
         background-color: $blue-dark;
-        color: white;
+        color: $white;
         cursor: pointer;
       }
     }
