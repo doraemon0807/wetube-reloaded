@@ -238,33 +238,32 @@ export const search = async (req, res) => {
       break;
   }
 
-  if (keyword) {
-    switch (type) {
-      case "Title":
-        videos = await Video.find({
-          title: {
-            $regex: new RegExp(keyword, "i"), // <- contains (both lower and capital case)
-            // $regex: new RegExp(`^${keyword}`, "i"), <- starts with
-            // $regex: new RegExp(`${keyword}$`, "i"), <- ends with
-          },
-        })
-          .sort(sorting)
-          .populate("owner");
-        break;
-      case "Hashtag":
-        videos = await Video.find({
-          hashtags: {
-            $regex: new RegExp(keyword, "i"), // <- contains (both lower and capital case)
-            // $regex: new RegExp(`^${keyword}`, "i"), <- starts with
-            // $regex: new RegExp(`${keyword}$`, "i"), <- ends with
-          },
-        })
-          .sort(sorting)
-          .populate("owner");
-        break;
-    }
-    searched = true;
+  switch (type) {
+    case "Title":
+      videos = await Video.find({
+        title: {
+          $regex: new RegExp(keyword, "i"), // <- contains (both lower and capital case)
+          // $regex: new RegExp(`^${keyword}`, "i"), <- starts with
+          // $regex: new RegExp(`${keyword}$`, "i"), <- ends with
+        },
+      })
+        .sort(sorting)
+        .populate("owner");
+      break;
+    case "Hashtag":
+      videos = await Video.find({
+        hashtags: {
+          $regex: new RegExp(keyword, "i"), // <- contains (both lower and capital case)
+          // $regex: new RegExp(`^${keyword}`, "i"), <- starts with
+          // $regex: new RegExp(`${keyword}$`, "i"), <- ends with
+        },
+      })
+        .sort(sorting)
+        .populate("owner");
+      break;
   }
+  searched = true;
+
   return res.render("videos/search", {
     pageTitle: "Search",
     videos,

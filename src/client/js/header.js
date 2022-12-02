@@ -29,19 +29,19 @@ const darkmodeIcon = darkmode.querySelector("i");
 let mode;
 
 const handleDarkmode = () => {
-  switchDarkmode();
   refreshMode();
   switch (mode) {
     case "darkmode":
       localStorage.setItem("mode", "default");
-      darkmode.setAttribute("tooltip", "Light Mode");
+      darkmode.setAttribute("tooltip", "Dark Mode");
       break;
     case "default":
     case null:
       localStorage.setItem("mode", "darkmode");
-      darkmode.setAttribute("tooltip", "Dark Mode");
+      darkmode.setAttribute("tooltip", "Light Mode");
       break;
   }
+  switchDarkmode();
 };
 
 const checkDarkmode = () => {

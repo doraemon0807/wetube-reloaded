@@ -49,9 +49,9 @@ const addComment = (comment) => {
   deleteIcon.className = "fas fa-trash-alt";
 
   deleteBtn.appendChild(deleteIcon);
-  deleteBtn.addEventListener("click", () => {
-    addAlertBox(deleteBtn, "deleteComment");
-  });
+  // deleteBtn.addEventListener("click", () => {
+  //   addAlertBox(deleteBtn, "deleteComment");
+  // });
 
   const editBtn = document.createElement("button");
   const editIcon = document.createElement("i");
@@ -145,6 +145,17 @@ const handleSubmit = async (event) => {
     commentsCount.innerText = parseInt(commentsCount.innerText) + 1;
     commentsCountUnit.innerText =
       commentsCount.innerText === "1" ? " Comment" : " Comments";
+
+    const deleteBtn = document.querySelector(
+      ".video__comment__buttons__delete"
+    );
+
+    deleteBtn.addEventListener("click", () => {
+      addAlertBox(deleteBtn, "deleteComment");
+      document
+        .querySelector(".alert__link")
+        .addEventListener("click", handleDelete);
+    });
   }
 };
 

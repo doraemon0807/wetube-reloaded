@@ -13,7 +13,7 @@ header
                 else
                     option(name="title") Title
                     option(name="hashtag") Hashtag
-            input(name="keyword", placeholder="Search by keyword", value=keyword, type="text")
+            input(name="keyword", placeholder="Search by keyword", value=keyword, type="text" required)
             button
                 div(tooltip="Search").search__button__area.tooltip
                     i.fas.fa-search
@@ -21,7 +21,7 @@ header
     nav 
         ul
             li.header__darkmode.tooltip(tooltip="Dark Mode")
-                i.fas.fa-sun
+                i.fas.fa-moon
 
             if loggedIn 
                 li.header__hamburger

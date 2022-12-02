@@ -52,7 +52,7 @@ main {
 }
 
 .message {
-  position: absolute;
+  position: fixed;
   top: 10px;
   left: 0;
   right: 0;
@@ -62,6 +62,7 @@ main {
   border-radius: 10000px;
   text-align: center;
   animation: goAway 4s ease-in-out forwards;
+  z-index: 200;
   &.error {
     background-color: tomato;
     color: $white;
