@@ -20,6 +20,9 @@ header
 
     nav 
         ul
+            li.header__darkmode.tooltip(tooltip="Dark Mode")
+                i.fas.fa-sun
+
             if loggedIn 
                 li.header__hamburger
                     div.header__hamburger__icon.tooltip(tooltip="Menu")
@@ -29,7 +32,6 @@ header
                     div.header__hamburger__menu.hamburger__hidden
                         a(href="/videos/upload") Upload Video
                         a(href="/users/edit") Edit Profile
-                        //- a(href="/users/logout") Log Out
                         button#logout Log Out
                     
                 li.header__avatar.tooltip(tooltip="My Profile")

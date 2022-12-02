@@ -99,9 +99,11 @@
   cursor: pointer;
   span {
     margin-left: 10px;
+    color: $black;
   }
   i {
     transition: color ease-in-out 0.1s;
+    color: $black;
   }
   &:hover {
     background-color: $gray-dark;
@@ -109,7 +111,7 @@
 }
 
 .liked {
-  background-color: rgba(0, 255, 0, 0.2) !important;
+  background-color: #ccffcc !important;
   i {
     color: red;
     animation: wobble-hor-bottom 0.8s both;
@@ -125,8 +127,9 @@
   padding: 10px 0;
   display: flex;
   flex-direction: column;
+  border: 1px solid $gray-lighter;
   box-shadow: 1px 3px 3px $gray-dark;
-  background-color: $white;
+  @extend .themeBGColor;
   border-radius: 5px;
 
   .alert__title {
@@ -154,7 +157,7 @@
 }
 
 .grayFont {
-  color: #606060;
+  @extend .themeFontGray;
   font-size: 14px;
   font-weight: 400;
 }

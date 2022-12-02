@@ -38,12 +38,16 @@
 
     .video__btns__edit,
     .video__btns__delete {
-      background-color: rgba(235, 235, 235, 1);
+      background-color: $gray-light;
       padding: 10px 20px;
       border: 1px solid $gray-light;
       cursor: pointer;
       font-size: 15px;
       transition: background-color 0.1s ease-in-out;
+
+      i {
+        color: $black;
+      }
 
       &:hover {
         background-color: $gray-dark;

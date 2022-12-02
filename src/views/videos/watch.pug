@@ -116,7 +116,7 @@ block content
     div.video__comments
         ul 
             each comment in comments
-                li.video__comment(data-id=comment.id)
+                li.video__comment(data-id=comment.id, id=comment.id)
                     div.video__comment__container
                         div.video__comment__avatar
                             +avatar(comment.owner, "medium")
@@ -124,7 +124,7 @@ block content
                             div.video__comment__info__owner
                                 div.video__comment__info__owner__username=comment.owner.name
                                 +createdAgo(comment.createdAt)
-                                span.video__comment__info__edited=`${comment.edited? "(Edited)" : ""}`
+                                span.video__comment__info__edited.grayFont=`${comment.edited? "(Edited)" : ""}`
                             div.video__comment__info__description
                                 span.video__comment__info__description__span=comment.text
                                 

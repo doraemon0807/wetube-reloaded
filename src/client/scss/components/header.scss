@@ -1,8 +1,14 @@
 header {
-  padding: 20px 10px;
+  box-sizing: border-box;
+  padding: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  @extend .themeBGColor;
   .header__logo {
     display: flex;
     align-items: center;
@@ -16,7 +22,7 @@ header {
       font-size: 38px;
     }
     span {
-      color: $black;
+      @extend .themeFontColor;
       font-size: 26px;
       font-family: "Oswald";
       font-weight: 500;
@@ -56,7 +62,8 @@ header {
     padding: 0 10px;
     cursor: pointer;
     transform: translateX(1px);
-    color: $gray-darkest;
+    @extend .themeFontGrayDarkest;
+    @extend .themeBGColor;
     box-shadow: inset 1px 1px 2px $gray-light;
   }
 
@@ -66,12 +73,14 @@ header {
     padding-left: 10px;
     border: 1px solid $gray-dark;
     box-shadow: inset 0 1px 1px $gray-light;
+    @extend .themeFontGrayDarkest;
+    @extend .themeBGColor;
   }
 
   button {
     all: unset;
-    background-color: $gray-lighter;
-    color: $black;
+    @extend .themeBGGrayLighter;
+    @extend .themeFontGrayDarkest;
     text-align: center;
     border: 1px solid $gray-dark;
     padding: 15px 40px;
@@ -80,6 +89,10 @@ header {
     transition: background-color ease-in-out 0.1s;
     position: relative;
     transform: translateX(-1px);
+
+    &:hover {
+      @extend .themeBGGrayLight;
+    }
 
     .search__button__area {
       position: absolute;
@@ -96,15 +109,15 @@ header {
         font-size: 18px;
       }
     }
-
-    &:hover {
-      background-color: $gray-light;
-    }
   }
 }
 
 .header__avatar {
   transition: transform 0.1s ease-in-out;
+}
+
+.header__darkmode {
+  @extend .header__hamburger;
 }
 
 .header__hamburger {
@@ -119,11 +132,12 @@ header {
   cursor: pointer;
   transition: background-color 0.1s ease-in-out;
   &:hover {
-    background-color: $gray-light;
+    @extend .themeBGGrayLight;
   }
   .header__hamburger__icon {
     width: 30px;
     height: 30px;
+    border-radius: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -134,7 +148,7 @@ header {
       width: 3px;
       height: 3px;
       border-radius: 50%;
-      background-color: $gray-darkest;
+      @extend .themeBGColorReverse;
     }
   }
 
@@ -148,7 +162,7 @@ header {
     box-shadow: 1px 2px 2px $gray-dark;
     border-radius: 10px;
     border: 1px solid $gray-light;
-    background-color: $white;
+    @extend .themeBGColor;
     opacity: 1;
 
     display: flex;
@@ -162,7 +176,7 @@ header {
       box-sizing: border-box;
 
       &:hover {
-        background-color: $gray-light;
+        @extend .themeBGGrayLight;
       }
 
       &:first-child {
@@ -181,7 +195,7 @@ header {
       font-weight: 500;
       text-transform: uppercase;
       &:hover {
-        background-color: $gray-light;
+        @extend .themeBGGrayLight;
       }
     }
   }

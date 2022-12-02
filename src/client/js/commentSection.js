@@ -9,6 +9,7 @@ const addComment = (comment) => {
   const videoComments = document.querySelector(".video__comments ul");
   const newComment = document.createElement("li");
   newComment.dataset.id = comment._id;
+  newComment.id = comment._id;
   newComment.className = "video__comment";
 
   const commentOwner = document.createElement("span");
@@ -242,6 +243,7 @@ const handleEdit = (event) => {
   videoComment.append(commentEditContainer);
 
   videoComment.style.backgroundColor = "#d0ffc0";
+  videoComment.style.color = "#202020";
   editBtn.classList.add("hidden");
 
   commentEditContainerFormButton1.addEventListener("click", handleEditSubmit);
@@ -307,6 +309,7 @@ const restoreEditComment = (btn) => {
     btn.parentElement.parentElement.parentElement.parentElement;
 
   videoComment.style.backgroundColor = "";
+  videoComment.style.color = "";
 
   const commentEditContainer = videoComment.querySelector(
     ".video__comment__edit__container"

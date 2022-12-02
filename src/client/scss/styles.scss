@@ -26,6 +26,7 @@
 @import "./screens/404.scss";
 
 // Defaults
+
 a {
   color: inherit;
   text-decoration: none;
@@ -36,15 +37,18 @@ body {
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   background-color: $white;
   color: $black;
-  padding: 0 20px 20px 20px;
+  padding-bottom: 30px;
   overflow-x: hidden;
+  transition: all 0.1s ease-in-out;
 }
 
 main {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 90px;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 .message {
@@ -75,4 +79,68 @@ main {
 .hidden {
   visibility: hidden;
   transform: scale(0);
+}
+
+.default {
+  color: $black;
+  background-color: $white;
+  .themeFontColor {
+    color: $black;
+  }
+  .themeFontGray {
+    color: #606060;
+  }
+  .themeFontGrayDarkest {
+    color: $gray-darkest;
+  }
+  .themeBGColor {
+    background-color: $white;
+  }
+  .themeBGColorReverse {
+    background-color: $black;
+  }
+  .themeBGGrayLight {
+    background-color: $gray-light;
+  }
+  .themeBGGrayLighter {
+    background-color: $gray-lighter;
+  }
+  .themeBGGrayDark {
+    background-color: $gray-dark;
+  }
+  .themeBGGrayDarkest {
+    background-color: $gray-darkest;
+  }
+}
+
+.darkmode {
+  color: $white;
+  background-color: $black;
+  .themeFontColor {
+    color: $white;
+  }
+  .themeFontGray {
+    color: #a7a7a7;
+  }
+  .themeFontGrayDarkest {
+    color: $gray-lighter;
+  }
+  .themeBGColor {
+    background-color: $black;
+  }
+  .themeBGColorReverse {
+    background-color: $white;
+  }
+  .themeBGGrayLight {
+    background-color: $gray-dark;
+  }
+  .themeBGGrayLighter {
+    background-color: $gray-darkest;
+  }
+  .themeBGGrayDark {
+    background-color: $gray-light;
+  }
+  .themeBGGrayDarkest {
+    background-color: $gray-lighter;
+  }
 }
