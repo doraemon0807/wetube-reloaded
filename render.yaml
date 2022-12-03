@@ -7,7 +7,7 @@ services:
     env: docker # valid values: https://render.com/docs/yaml-spec#environment
     dockerfilePath: Dockerfile.render
     plan: free # optional; defaults to starter
-    numInstances: 0
+    numInstances: 1
     envVars:
       - key: AWS_ID # Imported from Heroku app
         value: AKIAZYT5E74NMDE6S44T
@@ -19,4 +19,3 @@ services:
         value: 499786b68f73eb149b377c97f9939f01
       - key: KAKAO_REDIRECT # Imported from Heroku app
         value: https://wetube-reloaded-2022.herokuapp.com/users/kakao/finish
-
