@@ -1,12 +1,9 @@
-# fly.toml file generated for wetube-reloaded-2022 on 2022-12-02T23:07:05-05:00
+# fly.toml file generated for wetube-reloaded on 2022-12-03T00:49:11-05:00
 
-app = "wetube-reloaded-2022"
+app = "wetube-reloaded"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
-
-[build]
-  image = "flyio/hellofly:latest"
 
 [env]
 
