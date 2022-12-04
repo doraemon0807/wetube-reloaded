@@ -164,12 +164,16 @@ const deleteFromDb = async (id, object, type) => {
           }
         }
       } catch (error) {
-        console.log(error);
+        console.log("error when removing comments from user's comment list");
       }
 
-      const user = await User.findById(object.owner);
-      user.videos.splice(user.videos.indexOf(id), 1);
-      user.save();
+      try {
+        const user = await User.findById(object.owner);
+        user.videos.splice(user.videos.indexOf(id), 1);
+        user.save();
+      } catch (error) {
+        console.log("error when removing video from user's video list ");
+      }
 
       await Video.findByIdAndDelete(id);
 
