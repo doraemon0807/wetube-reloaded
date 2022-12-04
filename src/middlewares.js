@@ -152,6 +152,7 @@ const deleteFromDb = async (id, object, type) => {
       try {
         if (object.comments) {
           for (const comment of object.comments) {
+            console.log(comment);
             let commentUser = (await User.find({ comments: comment }))[0];
             if (commentUser) {
               commentUser.comments.splice(
@@ -164,7 +165,10 @@ const deleteFromDb = async (id, object, type) => {
           }
         }
       } catch (error) {
-        console.log("error when removing comments from user's comment list");
+        console.log(
+          "error when removing comments from user's comment list",
+          error
+        );
       }
 
       try {
@@ -172,7 +176,7 @@ const deleteFromDb = async (id, object, type) => {
         user.videos.splice(user.videos.indexOf(id), 1);
         user.save();
       } catch (error) {
-        console.log("error when removing video from user's video list ");
+        console.log("error when removing video from user's video list", error);
       }
 
       await Video.findByIdAndDelete(id);

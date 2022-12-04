@@ -196,22 +196,22 @@ export const deleteVideo = async (req, res) => {
     return res.status(403).redirect("/");
   }
 
-  if (video.comments) {
-    for (const comment of video.comments) {
-      let commentUser = (await User.find({ comments: comment }))[0];
-      if (commentUser) {
-        commentUser.comments.splice(commentUser.comments.indexOf(comment), 1);
-        await commentUser.save();
-        await Comment.findByIdAndDelete(comment);
-      }
-    }
-  }
+  // if (video.comments) {
+  //   for (const comment of video.comments) {
+  //     let commentUser = (await User.find({ comments: comment }))[0];
+  //     if (commentUser) {
+  //       commentUser.comments.splice(commentUser.comments.indexOf(comment), 1);
+  //       await commentUser.save();
+  //       await Comment.findByIdAndDelete(comment);
+  //     }
+  //   }
+  // }
 
-  await Video.findByIdAndDelete(id);
+  // await Video.findByIdAndDelete(id);
 
-  const user = await User.findById(_id);
-  user.videos.splice(user.videos.indexOf(id), 1);
-  user.save();
+  // const user = await User.findById(_id);
+  // user.videos.splice(user.videos.indexOf(id), 1);
+  // user.save();
 
   req.flash("success", "Video Deleted.");
   return res.redirect("/");
