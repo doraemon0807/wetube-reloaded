@@ -148,18 +148,22 @@ const deleteFromDb = async (id, object, type) => {
         }
       }
 
-      if (object.comments) {
-        for (const comment of object.comments) {
-          let commentUser = (await User.find({ comments: comment }))[0];
-          if (commentUser) {
-            commentUser.comments.splice(
-              commentUser.comments.indexOf(comment),
-              1
-            );
-            await commentUser.save();
-            await Comment.findByIdAndDelete(comment);
+      try {
+        if (object.comments) {
+          for (const comment of object.comments) {
+            let commentUser = (await User.find({ comments: comment }))[0];
+            if (commentUser) {
+              commentUser.comments.splice(
+                commentUser.comments.indexOf(comment),
+                1
+              );
+              await commentUser.save();
+              await Comment.findByIdAndDelete(comment);
+            }
           }
         }
+      } catch (error) {
+        console.log(error);
       }
 
       const user = await User.findById(object.owner);

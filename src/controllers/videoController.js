@@ -3,7 +3,7 @@ import User from "../models/User";
 import Video from "../models/Video";
 
 export const home = async (req, res) => {
-  console.log(process.env.NODE_ENV);
+  console.log(process.env.NODE_ENV === "production");
   const videos = await Video.find({})
     .sort({ createdAt: "desc" })
     .populate("owner");
