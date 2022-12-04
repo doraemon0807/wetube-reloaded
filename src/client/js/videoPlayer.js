@@ -290,6 +290,7 @@ const handleKeyDown = (event) => {
   } else {
     switch (event.code) {
       case "Space":
+        event.preventDefault();
         handlePlayClick();
         break;
       case "ArrowUp":
