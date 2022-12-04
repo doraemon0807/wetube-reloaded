@@ -9,9 +9,9 @@
   "scripts": {
     "start": "node build/init.js",
     "build": "npm run build:server && npm run build:assets",
-    "build:server": "babel src -d build",
+    "build:server": "set NODE_ENV=production&&babel src -d build",
     "build:assets": "rimraf assets && webpack --mode=production --config webpack.config.js",
-    "dev:server": "nodemon",
+    "dev:server": "set NODE_ENV=development&&nodemon",
     "dev:assets": "rimraf assets && webpack --mode=development -w --config webpack.config.js"
   },
   "author": "doraemon0807",

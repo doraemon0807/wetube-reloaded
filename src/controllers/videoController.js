@@ -3,6 +3,7 @@ import User from "../models/User";
 import Video from "../models/Video";
 
 export const home = async (req, res) => {
+  console.log(process.env.NODE_ENV);
   const videos = await Video.find({})
     .sort({ createdAt: "desc" })
     .populate("owner");
@@ -212,6 +213,7 @@ export const deleteVideo = async (req, res) => {
   user.videos.splice(user.videos.indexOf(id), 1);
   user.save();
 
+  req.flash("success", "Video Deleted.");
   return res.redirect("/");
 };
 
