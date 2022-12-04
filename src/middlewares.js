@@ -149,37 +149,36 @@ const deleteFromDb = async (id, object, type) => {
         }
       }
 
-      try {
-        if (object.comments) {
-          for (const comment of object.comments) {
-            console.log(comment);
-            let commentUser = (await User.find({ comments: comment }))[0];
-            if (commentUser) {
-              commentUser.comments.splice(
-                commentUser.comments.indexOf(comment),
-                1
-              );
-              await commentUser.save();
-              await Comment.findByIdAndDelete(comment);
-            }
-          }
-        }
-      } catch (error) {
-        console.log(
-          "error when removing comments from user's comment list",
-          error
-        );
-      }
+      // try {
+      //   if (object.comments) {
+      //     for (const comment of object.comments) {
+      //       let commentUser = (await User.find({ comments: comment }))[0];
+      //       if (commentUser) {
+      //         commentUser.comments.splice(
+      //           commentUser.comments.indexOf(comment),
+      //           1
+      //         );
+      //         await commentUser.save();
+      //         await Comment.findByIdAndDelete(comment);
+      //       }
+      //     }
+      //   }
+      // } catch (error) {
+      //   console.log(
+      //     "error when removing comments from user's comment list",
+      //     error
+      //   );
+      // }
 
-      try {
-        const user = await User.findById(object.owner);
-        user.videos.splice(user.videos.indexOf(id), 1);
-        user.save();
-      } catch (error) {
-        console.log("error when removing video from user's video list", error);
-      }
+      // try {
+      //   const user = await User.findById(object.owner);
+      //   user.videos.splice(user.videos.indexOf(id), 1);
+      //   user.save();
+      // } catch (error) {
+      //   console.log("error when removing video from user's video list", error);
+      // }
 
-      await Video.findByIdAndDelete(id);
+      // await Video.findByIdAndDelete(id);
 
       break;
 
