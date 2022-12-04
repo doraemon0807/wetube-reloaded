@@ -3,6 +3,7 @@ import multerS3 from "multer-s3";
 import aws from "aws-sdk";
 import Video from "./models/Video";
 import User from "./models/User";
+import Comment from "./models/Comment";
 
 import fs from "fs";
 import path from "path";
