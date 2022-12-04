@@ -334,8 +334,8 @@ export const postChangePassword = async (req, res) => {
 
   user.password = newPassword;
   await user.save(); // <- save() triggers pre middleware to hash password
-  req.flash("info", "Password changed. Please log in with your new password.");
 
+  req.flash("info", "Password changed. Please log in with your new password.");
   req.session.destroy();
   return res.redirect("/login");
 };

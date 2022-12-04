@@ -32,6 +32,8 @@ header
                     div.header__hamburger__menu.hamburger__hidden
                         a(href="/videos/upload") Upload Video
                         a(href="/users/edit") Edit Profile
+                        if (!loggedInUser.socialOnly)
+                            a(href="/users/change-password") Reset Password
                         button#logout Log Out
                     
                 li.header__avatar.tooltip(tooltip="My Profile")
