@@ -27,4 +27,4 @@ Fullstack Video Sharing & Watching Platform
 <div>AWS S3</div>
 <div>Mongo Atlas</div>
 
-### <a href="" target="_blank">Try Live</a>
+### <a href="https://wetube-reloaded.fly.dev/" target="_blank">Try Live</a>
